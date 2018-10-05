@@ -5,24 +5,78 @@ API Documentation
 
 ## Contents
 
-TODO
+- [Resources](#resources)
+  - [API Users](#api-users)
+  - [Vendors](#vendors)
+  - [Shoppers](#shoppers)
+  - [Payments](#payments)
+- [Entities](#entities)
+  - [API User](#api-user)
+  - [Vendor](#vendor)
+  - [Shopper](#shopper)
+  - [Payment](#payment)
 ___
 
-## 1. On boarding steps:
+## 1. API Users Resource
 
-1. An organization should be created in LimePay
-2. An User for the organization should be created
-3. An APIUser must be created by the organization's user
+The source is located at `/v1/apiusers` and it is restricted resource. One could execute requests only with his email/password credentials.
 
-Once you have completed the described steps above you can start processing transactions.
+The authorization is made by adding `Basic Authorization` header and setting `email` and `password` as username and password. 
+
+### 1.1 Creating API User
+
+In order to create API User one should execute the following request:
+
+    POST /v1/apiusers
+
+No body data should be passed.
+
+The returned object is of type [API User](#api-user) 
 ___
 
-## 2. Payments Resource
+## 2. Vendors Resource
+
+The source is located at `/v1/vendors` and it is restricted resource. One could execute requests only with his `API credentials`.
+
+The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
+
+### 2.1 Creating Vendor
+
+In order to create Vendor one should execute the following request:
+
+    POST /v1/vendors
+
+Body data:
+// TODO
+
+The returned object is of type [Vendor](#vendor) 
+___
+
+## 3. Shoppers Resource
+
+The source is located at `/v1/shoppers` and it is restricted resource. One could execute requests only with his `API credentials`.
+
+The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
+
+### 3.1 Creating Shopper
+
+In order to create Vendor one should execute the following request:
+
+    POST /v1/shoppers
+
+Body data:
+// TODO
+
+The returned object is of type [Shopper](#shopper) 
+
+___
+
+## 4. Payments Resource
 The source is located at `/v1/payments` and it is restricted resource. One could execute requests only with his `API credentials`.
 
 The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
 
-### 2.1 Creating Payment
+### 4.1 Creating Payment
 
 In order to create Payment one should execute the following request:
 
@@ -39,7 +93,7 @@ Body data:
 | `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | yes        |
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | yes        |
 
-### 2.2 Getting Payment
+### 4.2 Getting Payment
 
 In order to get Payment one should execute the following request:
 
@@ -58,20 +112,15 @@ Returns Payment's data containing the following properties:
 | `items`              | `array`  | Objects containing information about the items that are being purchased         |
 | `fundTxData`         | `object` | Object containing information about the funding of an shopper                   |
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  |
-| `totalAmount`        | `number` | The total amount of the payment, represented in the selected currency           |
+| `totalAmount`        | `decimal` | The total amount of the payment, represented in the selected currency          |
 
 
+### 4.2 Getting All Payments for an Organization
+
+In order to get all Payments for an Organization one should execute:
+
+    GET /v1/payments/all
+
+Returns array of Payment objects
 
 
-
-
-Objects:
-
-
-
-
-
-
-
-
-In order for a full payment to be processed one should 
