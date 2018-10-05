@@ -20,7 +20,7 @@ API Documentation
   - [Payment](#payment)
 ___
 ## Resources
-### 1. API Users Resource
+### 1. API Users
 
 The source is located at `/v1/apiusers` and it is restricted resource. One could execute requests only with his email/password credentials.
 
@@ -37,7 +37,7 @@ No body data should be passed.
 The returned object is of type [API User](#api-user) 
 ___
 
-### 2. Vendors Resource
+### 2. Vendors
 
 The source is located at `/v1/vendors` and it is restricted resource. One could execute requests only with his `API credentials`.
 
@@ -55,7 +55,7 @@ Body data:
 The returned object is of type [Vendor](#vendor) 
 ___
 
-### 3. Shoppers Resource
+### 3. Shoppers
 
 The source is located at `/v1/shoppers` and it is restricted resource. One could execute requests only with his `API credentials`.
 
@@ -74,7 +74,7 @@ The returned object is of type [Shopper](#shopper)
 
 ___
 
-### 4. Payments Resource
+### 4. Payments
 The source is located at `/v1/payments` and it is restricted resource. One could execute requests only with his `API credentials`.
 
 The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
