@@ -153,7 +153,16 @@ In order to create Shopper one should execute the following request:
     POST /v1/shoppers
 
 Body data:
-// TODO
+
+| Field                    | Type     | Description                                                                        | Required |
+| ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
+| `firstName`              | `string` | First name of shopper                                                              | yes      |
+| `lastName`               | `string` | Last name of shopper                                                               | yes      |
+| `email`                  | `string` | Shopper email                                                                      | yes      |
+| `zip`                    | `string` | Shopper's zip code                                                                 | yes      |
+| `walletAddress`          | `string` | Shopper's wallet address                                                           | yes      |
+| `vatId`                  | `string` | The company’s VAT number                                                           | no, can be undefined if `taxId` is set |
+| `taxId`                  | `string` | The company’s business ID number                                                   | no, can be undefined if `vatId` is set |
 
 Returns object of type [Shopper](#shopper) 
 
@@ -180,6 +189,7 @@ In order to reset the malicious attempts of a Shopper one should execute the fol
     POST /v1/shoppers/reset
 
 Body data:
+
 | Field                | Type     |Description                                                                      | Required   |
 | -------------------- | -------- | ------------------------------------------------------------------------------- | ---------- |
 | `shopperId`          | `string` | The ID of the shopper for which we will reset the malicious attempts            | yes        |
