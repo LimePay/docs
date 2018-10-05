@@ -18,8 +18,9 @@ API Documentation
   - [Email Setup](#email-setup)
   - [Shopper](#shopper)
   - [Payment](#payment)
-___
+
 ## Resources
+___
 ### 1. API Users
 
 The source is located at `/v1/apiusers` and it is restricted resource. One could execute requests only with his email/password credentials.
@@ -34,7 +35,32 @@ In order to create API User one should execute the following request:
 
 No body data should be passed.
 
-The returned object is of type [API User](#api-user) 
+Returns object of type [API User](#api-user) 
+
+#### 1.2 Getting API User
+
+In order to get API User one should execute the following request:
+
+    GET /v1/apiusers/:id
+
+Returns object of type  [API User](#api-user)
+
+#### 1.3 Getting all API Users
+
+In order to get all API Users one should execute the following request:
+
+    GET /v1/apiusers
+
+Returns array of [API User](#api-user) objects.
+
+#### 1.4 Delete API User
+
+In order to delete API User one should execute the following request:
+
+    DELETE /v1/apiusers/:id
+
+If the deletion was successful, HTTP `status` code `200` will be returned 
+
 ___
 
 ### 2. Vendors
@@ -50,9 +76,68 @@ In order to create Vendor one should execute the following request:
     POST /v1/vendors
 
 Body data:
-// TODO
 
-The returned object is of type [Vendor](#vendor) 
+| Field                    | Type     | Description                                                                        | Required |
+| ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
+| `name`                   | `string` | Vendor name                                                                        | yes      |
+| `address`                | `string` | Vendor street address                                                              | yes      |
+| `city`                   | `string` | Vendor city                                                                        | yes      |
+| `country`                | `string` | Country code                                                                       | yes      |
+| `phone`                  | `string` | Vendor's phone                                                                     | yes      |
+| `email`                  | `string` | Vendor email                                                                       | yes      |
+| `vatId`                  | `string` | The company’s VAT number                                                           | no, can be undefined if `taxId` is set |
+| `taxId`                  | `string` | The company’s business ID number                                                   | no, can be undefined if `vatId` is set |
+| `payoutInfo`             | `array`  | Array of [Payout Info](#payout-info) objects                                       | yes      |
+| `vendorPrincipal`        | `object` | [Vendor Principal](#vendor-principal) object                                       | yes      |
+| `emailSetup`             | `object` | [Email Setup](#email-setup) object                                                 | yes      |
+| `defaultPayoutCurrency`  | `string` | Currency code (ISO 4217) for the default payout currency                           | yes      |
+| `vendorStatus`           | `string` | Vendor status. Can be [X,Y,Z] TODO                                                 | yes      |
+| `state`                  | `string` | Vendor state                                                                       | no, if country is not `US` or `CA` |
+
+Returns object of type [Vendor](#vendor) 
+
+#### 2.2 Getting Vendor
+
+In order to get Vendor one should execute the following request:
+
+    GET /v1/vendors/:id
+    
+Returns object of type [Vendor](#vendor) 
+
+#### 2.3 Getting All Vendors
+
+In order to get all Vendors one should execute the following request:
+
+    GET /v1/vendors
+
+Returns array of [Vendor](#vendor) objects
+
+#### 2.4 Update Vendor
+
+In order to update Vendor's properties one should execute the following request:
+
+    PATCH /v1/vendors/:id
+
+Body data:
+
+| Field                    | Type     | Description                                                                        | Required |
+| ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
+| `name`                   | `string` | Vendor name                                                                        | yes      |
+| `address`                | `string` | Vendor street address                                                              | yes      |
+| `city`                   | `string` | Vendor city                                                                        | yes      |
+| `country`                | `string` | Country code                                                                       | yes      |
+| `phone`                  | `string` | Vendor's phone                                                                     | yes      |
+| `email`                  | `string` | Vendor email                                                                       | yes      |
+| `vatId`                  | `string` | The company’s VAT number                                                           | no, can be undefined if `taxId` is set |
+| `taxId`                  | `string` | The company’s business ID number                                                   | no, can be undefined if `vatId` is set |
+| `payoutInfo`             | `array`  | Array of [Payout Info](#payout-info) objects                                       | yes      |
+| `vendorPrincipal`        | `object` | [Vendor Principal](#vendor-principal) object                                       | yes      |
+| `emailSetup`             | `object` | [Email Setup](#email-setup) object                                                 | yes      |
+| `defaultPayoutCurrency`  | `string` | Currency code (ISO 4217) for the default payout currency                           | yes      |
+| `vendorStatus`           | `string` | Vendor status. Can be [X,Y,Z] TODO                                                 | yes      |
+| `state`                  | `string` | Vendor state                                                                       | no, if country is not `US` or `CA` |
+
+Returns object of type [Vendor](#vendor) 
 ___
 
 ### 3. Shoppers
@@ -63,15 +148,43 @@ The authorization is made by adding `Basic Authorization` header and setting `ap
 
 #### 3.1 Creating Shopper
 
-In order to create Vendor one should execute the following request:
+In order to create Shopper one should execute the following request:
 
     POST /v1/shoppers
 
 Body data:
 // TODO
 
-The returned object is of type [Shopper](#shopper) 
+Returns object of type [Shopper](#shopper) 
 
+#### 3.2 Getting Shopper
+
+In order to get Shopper one should execute the following request:
+
+    GET /v1/shoppers/:id
+
+Returns object of type [Shopper](#shopper) 
+
+#### 3.3 Getting all Shoppers
+
+In order to get all Shoppers one should execute the following request:
+
+    GET /v1/shoppers
+
+Returns array of [Shopper](#shopper) objects 
+
+#### 3.4 Reseting Shopper's malicious attempts
+
+In order to reset the malicious attempts of a Shopper one should execute the following request:
+
+    POST /v1/shoppers/reset
+
+Body data:
+| Field                | Type     |Description                                                                      | Required   |
+| -------------------- | -------- | ------------------------------------------------------------------------------- | ---------- |
+| `shopperId`          | `string` | The ID of the shopper for which we will reset the malicious attempts            | yes        |
+
+Returns object of type [Shopper](#shopper) 
 ___
 
 ### 4. Payments
@@ -96,22 +209,24 @@ Body data:
 | `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | yes        |
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | yes        |
 
+Returns object of type  [Payment](#payment)
+
 #### 4.2 Getting Payment
 
 In order to get Payment one should execute the following request:
 
     GET /v1/payments/:id
 
-The returned object is of type [Payment](#payment)
+Returns object of type  [Payment](#payment)
 
 #### 4.2 Getting All Payments for an Organization
 
-In order to get all Payments for an Organization one should execute:
+In order to get all Payments one should execute:
 
     GET /v1/payments/all
 
 Returns array of [Payment](#payment) objects
-
+___
 ## Entities
 
 ### API User 
@@ -141,6 +256,7 @@ Returns array of [Payment](#payment) objects
 | `emailSetup`             | `object` | [Email Setup](#email-setup) object                                                 | yes      |
 | `defaultPayoutCurrency`  | `string` | Currency code (ISO 4217) for the default payout currency                           | no       |
 | `vendorStatus`           | `string` | Vendor status. Can be [X,Y,Z] TODO                                                 | no       |
+| `state`                  | `string` | Vendor state                                                                       | yes, if country is not `US` or `CA` |
 
 ### Payout Info
 
@@ -161,6 +277,7 @@ Returns array of [Payment](#payment) objects
 | `payoutType`             | `string` | Method of payout to vendor. Possible values: `ACH` (USD, CAD), `CHAPS` (GBP), `SEPA` (EUR), `WIRE` | no       |
 | `baseCurrency`           | `string` | Payout currency for vendor's bank account.                                         | no       |
 | `minimalPayoutAmount`    | `integer`| Minimum amount for which a vendor may be paid out. If the vendor's account balance is below this amount, their balance will be carried forward to the next pay cycle. The currency for `minimalPayoutAmount` is the same as `baseCurrency`.               | no       |
+| `state`                  | `string` | Vendor state                                                                       | yes, if country is not `US` or `CA` |
 
 
 Possible values for `payoutType`:
