@@ -72,39 +72,37 @@ For more information on how to create a payment, see the `Payments` Resource in 
 1) You will need to install the npm library - `limepay-web`
 
 2) Define your `config` object: 
+The config object must have the following structure:
 ```javascript
 let limePayConfig = {
-    signingTxCallback: callbackFn,
+    signingTxCallback: function () {
+        // Function that returns array of signed transactions
+        returns [];
+    },
     eventHandler: {
         onSuccessfulSubmit: function () {
-        alert('Your payment was send for processing');
-        // Implement some logic
+            alert('Your payment was send for processing');
+            // Implement some logic
         },
         onFailedSubmit: function (err) {
             alert('Your payment failed');
-        // Implement some logic
+            // Implement some logic
         }
     }
 }
 ```
 
+The property `signingTxCallback` must be a function that is performing the signing of the transactions. It must return array of the **signed** transactions.
+**Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
 
-In order for you to initialize the checkout form you will need to:
+3) Initialize the checkout:
 ```javascript
 let LimePayWeb = require('limepay-web');
 
 LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
-        alert('Form initialization failed');
-        // Implement some logic
-    });
+    alert('Form initialization failed');
+    // Implement some logic
+});
 ```
 
-The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object.
-
-and created a payment and received a `x-lime-token` you can initialize the Checkout form in your UI.
-
-
-
-
-
-
+The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
