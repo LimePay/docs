@@ -1,4 +1,3 @@
-
 Getting Started
 ============
 
@@ -70,7 +69,39 @@ For more information on how to create a payment, see the `Payments` Resource in 
 
 ### 7. Initialize LimePay's Checkout form
 
-Once you have created a payment and received a `x-lime-token` you can initialize the Checkout form in your UI.
+1) You will need to install the npm library - `limepay-web`
+
+2) Define your `config` object: 
+```javascript
+let limePayConfig = {
+    signingTxCallback: callbackFn,
+    eventHandler: {
+        onSuccessfulSubmit: function () {
+        alert('Your payment was send for processing');
+        // Implement some logic
+        },
+        onFailedSubmit: function (err) {
+            alert('Your payment failed');
+        // Implement some logic
+        }
+    }
+}
+```
+
+
+In order for you to initialize the checkout form you will need to:
+```javascript
+let LimePayWeb = require('limepay-web');
+
+LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
+        alert('Form initialization failed');
+        // Implement some logic
+    });
+```
+
+The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object.
+
+and created a payment and received a `x-lime-token` you can initialize the Checkout form in your UI.
 
 
 
