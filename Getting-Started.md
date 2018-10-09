@@ -69,9 +69,52 @@ For more information on how to create a payment, see the `Payments` Resource in 
 
 ### 7. Initialize LimePay's Checkout form
 
-1) You will need to install the npm library - `limepay-web`
+1) Add the HTML Form in your application.
+You are required to add the following HTML form into your applicaiton:
 
-2) Define your `config` object: 
+```HTML
+    <form id="checkout-form" onsubmit="LimePayWeb.PaymentService.processPayment()">
+        <div class="row">
+            <!--Field for CCN -->
+            <div class="form-group col-xs-9">
+                <label for="card-number">Card Number</label>
+                <div class="input-group">
+                    <div class="form-control" id="card-number" data-bluesnap="ccn"></div>
+                    <div id="card-logo" class="input-group-addon">
+                        <img src="https://files.readme.io/d1a25b4-generic-card.png" height="20px">
+                    </div>
+                </div>
+                <span class="helper-text" id="ccn-help"></span>
+            </div>
+
+            <!--Field for CVV-->
+            <div class="form-group col-xs-3">
+                <label for="cvv">CVV</label>
+                <div class="form-control" id="cvv" data-bluesnap="cvv"></div>
+                <span class="helper-text" id="cvv-help"></span>
+            </div>
+            
+            <!--Field for EXP-->
+            <div class="form-group col-xs-6">
+                <label for="exp-date">Exp. (MM/YY)</label>
+                <div class="form-control" id="exp-date" data-bluesnap="exp"></div>
+                <span class="helper-text" id="exp-help"></span>
+            </div>
+        </div>
+        <button class="btn btn-raised btn-info btn-lg col-md-4" type="submit" id="submit-button">Pay Now</button>
+    </form>
+```
+
+Must have requirements:
+- Have a form, with attributes `id="checkout-form"` and `onsubmit="LimePayWeb.PaymentService.processPayment()"`.
+- Have element with attributes `id="card-number"` and `data-bluesnap="ccn"`
+- Have element with attributes `id="cvv"` and `data-bluesnap="cvv"`
+- Have element with attributes `id="exp-date"` and `data-bluesnap="exp"`
+- Have button with attributes `id="submit-button"` and `type="submit"` 
+
+3) You will need to `npm install limepay-web` and `require` it OR include the provided `lime-pay.min.js`
+
+4) Define your `config` object: 
 The config object must have the following structure:
 ```javascript
 let limePayConfig = {
@@ -92,10 +135,12 @@ let limePayConfig = {
 }
 ```
 
-The property `signingTxCallback` must be a function that is performing the signing of the transactions. It must return array of the **signed** transactions.
+The property `signingTxCallback` must be a function that is performing the signing of the transactions. It must return array of the **signed** transactions. More details of how we can implement the function can be found in [signing transactions](#signing-transactions) section.
 **Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
 
-3) Initialize the checkout:
+5) Initialize the checkout:
+The provided sample below is the `require` and not the `lime-pay.min.js` option
+
 ```javascript
 let LimePayWeb = require('limepay-web');
 
@@ -106,3 +151,74 @@ LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
 ```
 
 The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
+
+### 8. Signing Transactions
+
+This section describes how we can define/implement our `signingTxCallback` function that we need to provide into the `limePayConfig`.
+
+The `limepay-web` library provides helper function to ease the development efforts for providing the signed transactions array.
+The provided sample below shows how you can achieve the signing.
+
+You can use the `TransactionsBuilder` tool in `limepay-web` to sign transactions.
+
+```javascript
+let txBuilder = new LimePayWeb.TransactionsBuilder(jsonWallet, password);
+```
+
+The `TransactionsBuilder` has 2 parameters. The first one being the `jsonWallet` and second one the `password` or the `passphrase` that unlocks the JSON wallet. 
+
+**Note:** Keep in mind that the provided `jsonWallet` will be the **signer** of the transactions, meaning that this must be the wallet of the user that is going to be charged, and is registered as `shopper` in LimePay. It is your responsibility to keep the wallet address up-to-date, meaning that if you change the `jsonWallet` of your shopper, you must change `walletAddress` of the shopper in LimePay.
+
+The next thing to do is to build the signed transactions:
+
+```javascript
+txBuilder.buildSignedTransactions(transactions);
+```
+
+`.buildSignedTransactions` returns a Promise. If resolved the result will be array of signed transactions. The functions accepts as parameter an array of transactions. 
+
+The transactions array contains objects of type:
+```javascript
+let transaction = {
+    to: 'ethereumAddress', // The to address of the transaction
+    abi: tokenABI, // The ABI of the contract that is deployed at the to address
+    gasLimit: 4700000, // The gasLimit of the transaction
+    value: 0, // The ethers that are going to be sent along with the transaction
+    fnName: "approve", // The name of the function that must be called
+    params: [...params], // The parameters that are going to be passed to the function
+}
+```
+
+The whole signing process is shown in the sample below:
+
+```javascript
+let transactions = [
+    {
+        to: '0xc8b06aA70161810e00bFd283eDc68B1df1082301',
+        abi: tokenABI,
+        gasLimit: 4700000,
+        value: 0,
+        fnName: "approve",
+        params: ["0x07F3fB05d8b7aF49450ee675A26A01592F922734", 1]
+    },
+    {
+        to: '0x07F3fB05d8b7aF49450ee675A26A01592F922734',
+        abi: contractABI,
+        gasLimit: 4700000,
+        value: 0,
+        fnName: "buySomeService",
+        params: ["0x1835f2716ba8f3ede4180c88286b27f070efe985"]
+    }
+];
+
+let txBuilder = new LimePayWeb.TransactionsBuilder(jsonWallet, password);
+let result = await txBuilder.buildSignedTransactions(transactions);
+// The result will be ["rawSignedTransaction0", "rawSignedTransaction1"]
+```
+
+In this example, the first transaction will be `approve` transaction that is going to callthe Token contract and `approve` the service contract to `charge` 1 token.
+
+The second transaction will call the service contract and execute the `buySomeService` function.
+
+
+#### For more information and examples of how to integrate with LimePay, you can check the `sample-projects` repo
