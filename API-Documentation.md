@@ -70,7 +70,7 @@ The source is located at `/v1/vendors` and it is restricted resource. One could 
 The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
 
 #### 2.1 Creating Vendor
-
+##### ***Notice**: The Creation of Vendors is **NOT** be accessible for now. Once we make it accessible, we will update the documentation.* 
 In order to create Vendor one should execute the following request:
 
     POST /v1/vendors
@@ -113,7 +113,7 @@ In order to get all Vendors one should execute the following request:
 Returns array of [Vendor](#vendor) objects
 
 #### 2.4 Update Vendor
-
+##### ***Notice**: The Update of Vendor is **NOT** be accessible for now. Once we make it accessible, we will update the documentation.* 
 In order to update Vendor's properties one should execute the following request:
 
     PATCH /v1/vendors/:id
@@ -159,11 +159,13 @@ Body data:
 | `firstName`              | `string` | First name of shopper                                                              | yes      |
 | `lastName`               | `string` | Last name of shopper                                                               | yes      |
 | `email`                  | `string` | Shopper email                                                                      | yes      |
+| `vendor`                 | `string` | The ID of the Vendor.                                                              | yes      |
 | `zip`                    | `string` | Shopper's zip code                                                                 | yes      |
 | `walletAddress`          | `string` | Shopper's wallet address                                                           | yes      |
-| `vatId`                  | `string` | The company’s VAT number                                                           | no, can be undefined if `taxId` is set |
-| `taxId`                  | `string` | The company’s business ID number                                                   | no, can be undefined if `vatId` is set |
+| `vatId`                  | `string` | The company’s VAT number                                                           | no       |
+| `taxId`                  | `string` | The company’s business ID number                                                   | no       |
 
+*Note*: You do not need to specify `vatId` if you specified `taxId` and vice versa.
 Returns object of type [Shopper](#shopper) 
 
 #### 3.2 Getting Shopper
@@ -192,7 +194,7 @@ Body data:
 
 | Field                | Type     |Description                                                                      | Required   |
 | -------------------- | -------- | ------------------------------------------------------------------------------- | ---------- |
-| `shopperId`          | `string` | The ID of the shopper for which we will reset the malicious attempts            | yes        |
+| `shopperId`          | `string` | The ID of the shopper for which it will reset the malicious attempts            | yes        |
 
 Returns object of type [Shopper](#shopper) 
 ___
@@ -213,11 +215,10 @@ Body data:
 | Field                | Type     |Description                                                                      | Required   |
 | -------------------- | -------- | ------------------------------------------------------------------------------- | ---------- |
 | `currency`           | `string` | Currency code (ISO 4217) of the amount to be charged                            | yes        |
-| `shopper`            | `string` | The shopperID of the shopper that will be charged                               | yes        |
-| `vendor`             | `string` | The vendorID of the vendor that will charge the payment                         | yes        |
-| `items`              | `array`  | Objects containing information about the items that are being purchased         | yes        |
-| `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | yes        |
-| `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | yes        |
+| `shopper`            | `string` | The ID of the shopper that will be charged                                      | yes        |
+| `items`              | `array`  | Array of [Item](#item) objects                                                  | yes        |
+| `fundTxData`         | `object` | [Fund TX Data](#fund-transaction-data) object                                   | yes        |
+| `genericTransactions`| `array`  | Array of [Generic Transaction](#generic-transaction) objects                  | yes        |
 
 Returns object of type  [Payment](#payment)
 
@@ -229,11 +230,11 @@ In order to get Payment one should execute the following request:
 
 Returns object of type  [Payment](#payment)
 
-#### 4.2 Getting All Payments for an Organization
+#### 4.2 Getting all Payments
 
 In order to get all Payments one should execute:
 
-    GET /v1/payments/all
+    GET /v1/payments
 
 Returns array of [Payment](#payment) objects
 ___
@@ -253,32 +254,38 @@ ___
 | Attribute                | Type     | Description                                                                        | Nullable |
 | ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
 | `_id`                    | `string` | The ID of Vendor                                                                   | no       |
-| `name`                   | `string` | Vendor name                                                                        | no       |
-| `address`                | `string` | Vendor's street address                                                            | no       |
-| `city`                   | `string` | Vendor's city                                                                      | no       |
-| `country`                | `string` | Country code                                                                       | no       |
-| `phone`                  | `string` | Vendor's phone                                                                     | no       |
+| `name`                   | `string` | Vendor name. (Company's name)                                                      | no       |
 | `email`                  | `string` | Vendor email                                                                       | no       |
-| `vatId`                  | `string` | The company’s VAT number                                                           | yes, can be null if `taxId` is set |
-| `taxId`                  | `string` | The company’s business ID number                                                   | yes, can be null if `vatId` is set |
+| `country`                | `string` | Country code                                                                       | no       |
+| `city`                   | `string` | Vendor's city                                                                      | yes       |
+| `firstName`              | `string` | First name of Vendor (if individual vendor, not business)                          | yes      |
+| `lastName`               | `string` | First name of Vendor (if individual vendor, not business)                          | yes      |
+| `address`                | `string` | Vendor's street address                                                            | yes       |
+| `phone`                  | `string` | Vendor's phone                                                                     | yes       |
+| `zip`                    | `string` | The zip of the vendor                                                              | yes      |
+| `state`                  | `string` | Vendor state                                                                       | yes, if country is not `US` or `CA` |
+| `vatId`                  | `string` | The company’s VAT number                                                           | yes      |
+| `taxId`                  | `string` | The company’s business ID number                                                   | yes      |
 | `payoutInfo`             | `array`  | Array of [Payout Info](#payout-info) objects                                       | no       |
 | `vendorPrincipal`        | `object` | [Vendor Principal](#vendor-principal) object                                       | no       |
+| `receiptEmail`           | `string` | The email from which the receipts and invoices will be sent                        | no       |
 | `emailSetup`             | `object` | [Email Setup](#email-setup) object                                                 | yes      |
 | `defaultPayoutCurrency`  | `string` | Currency code (ISO 4217) for the default payout currency                           | no       |
-| `vendorStatus`           | `string` | Vendor status. Can be [X,Y,Z] TODO                                                 | no       |
-| `state`                  | `string` | Vendor state                                                                       | yes, if country is not `US` or `CA` |
+| `autoReceipt`            | `boolean`| If set to true, receipts will be sent automatically to the shoppers                | yes      |
+| `autoInvoice`            | `boolean`| If set to true, invoices will be sent automatically to the shoppers                | yes      |
+| `frequency`              | `string` | The payout frequency of the vendor. Possible values are: `DAILY`, `WEEKLY`, `SEMIMONTHLY` and `MONTHLY` | no   |
 
 ### Payout Info
 
 | Attribute                | Type     | Description                                                                        | Nullable |
 | ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
-| `_id`                    | `string` | The ID Payout info                                                                 | no       |
-| `bankId`                 | `integer`| Bank ID number (ie. Routing number)                                                | no       |
+| `_id`                    | `string` | The ID of a Payout info                                                            | no       |
+| `bankId`                 | `string` | Bank ID number (ie. Routing number)                                                | no       |
 | `bankName`               | `string` | Name of vendor bank                                                                | no       |
-| `country`                | `string` | Country code of vendor bank                                                       | no       |
-| `city`                   | `string` | City of vendor bank                                                                | no       |
-| `address`                | `string` | Street address of vendor bank                                                      | no       |
-| `zip`                    | `string` | Zip/Postal code of vendor bank                                                     | no       |
+| `country`                | `string` | Country code of vendor bank                                                        | no       |
+| `city`                   | `string` | City of vendor bank                                                                | yes       |
+| `address`                | `string` | Street address of vendor bank                                                      | yes       |
+| `zip`                    | `string` | Zip/Postal code of vendor bank                                                     | yes       |
 | `bankAccountId`          | `string` | Vendor bank account number                                                         | no       |
 | `iban`                   | `string` | Vendor International Bank Account Number                                           | yes, if `payoutType` is `CHAPS` or `SEPA` |
 | `bankAccountType`        | `string` | Account type. Possible values: `CHECKING`, `SAVINGS`                               | no       |
@@ -353,20 +360,53 @@ Possible values for `payoutType`:
 | `zip`                    | `string` | Shopper's zip                                                                      | no       |
 | `email`                  | `string` | Shopper email                                                                      | no       |
 | `walletAddress`          | `string` | Shopper wallet address                                                             | no       |
-| `vatId`                  | `string` | The shopper’s VAT number                                                           | no       |
+| `vatId`                  | `string` | The shopper’s VAT number                                                           | yes      |
+| `taxId`                  | `string` | The shopper’s TAX ID number                                                        | yes      |
 | `maliciousAttempts`      | `integer`| The number of malicious attemps for a shopper. It is incremented when a given signed transaction reverts. | no |
 
 ### Payment
 
-| Attribute            | Type     | Description                                                                     |
-| -------------------- | -------- | ------------------------------------------------------------------------------- |
-| `_id`                | `string` | The id of the payment                                                           |
-| `status`             | `string` | The status of the Payment                                                       |
-| `date`               | `date`   | The date time when the payment was created                                      |
-| `currency`           | `string` | Currency code (ISO 4217) of the amount to be charged                            |
-| `shopper`            | `string` | The shopperID of the shopper that will be charged                               |
-| `vendor`             | `string` | The vendorID of the vendor that will charge the payment                         |
-| `items`              | `array`  | Objects containing information about the items that are being purchased         |
-| `fundTxData`         | `object` | Object containing information about the funding of an shopper                   |
-| `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  |
-| `totalAmount`        | `decimal` | The total amount of the payment, represented in the selected currency          |
+| Attribute            | Type     | Description                                                                     | Nullable |
+| -------------------- | -------- | ------------------------------------------------------------------------------- | -------- |
+| `_id`                | `string` | The id of the payment                                                           | no       |
+| `status`             | `string` | The status of the Payment                                                       | no       |
+| `date`               | `date`   | The date time when the payment was created                                      | no       |
+| `currency`           | `string` | Currency code (ISO 4217) of the amount to be charged                            | no       |
+| `shopper`            | `string` | The shopperID of the shopper that will be charged                               | no       |
+| `vendor`             | `string` | The vendorID of the vendor that will charge the payment                         | no       |
+| `items`              | `array`  | Objects containing information about the items that are being purchased         | no       |
+| `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | no       |
+| `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | no       |
+| `totalAmount`        | `decimal` | The total amount of the payment, represented in the selected currency          | no       |
+
+
+### Item
+
+| Attribute            | Type     | Description                                                                     | Nullable |
+| -------------------- | -------- | ------------------------------------------------------------------------------- | -------- |
+| `description`        | `string` | Description of the item that is being bought. This information is displayed in the invoice. | no       |
+| `amount`             | `decimal`| Fiat amount of the item                                                         | no       |
+| `quantity`           | `integer`| Quantity of the items                                                           | no       |
+
+### Fund Transaction data
+
+| Attribute            | Type     | Description                                                                                         | Nullable |
+| -------------------- | -------- | --------------------------------------------------------------------------------------------------- | -------- |
+| `weiAmount`          | `string` | wei amount of the payment. This will be the amount of ethers that the shopper will be funded with   | no       |
+| `tokenAmount`        | `string` | token amount of the payment. This will be the amount of tokens that the shopper will be funded with | no       |
+| `transactionHash`    | `string` | The hash of the transaction. It will be set once the transaction is executed                        | yes      |
+| `status`             | `string `| The status of the transaction. Possible values are: `PENDING`, `PROCESSING`, `SUCCESSFUL`, `FAILED` | no       |
+
+### Generic transaction
+
+| Attribute            | Type     | Description                                                                                         | Nullable |
+| -------------------- | -------- | --------------------------------------------------------------------------------------------------- | -------- |
+| `to`                 | `string `| Address that the transaction will be sent to                                                        | no       |
+| `functionName`       | `string` | Name of the smart contract function                                                                 | no       |
+| `params`             | `array`  | Array of strings. The values of the parameters that will be passed to the function                  | no       |
+| `gasPrice`           | `string` | Gas price of the transaction                                                                        | no       |
+| `gasLimit`           | `string` | Gas limit of the transactions                                                                       | no       |
+| `signedTransaction`  | `string` | Signed transaction by the shoppers private key, that will be broadcasted                            | no       |
+| `status`             | `string `| Status of the transaction. Possible values are: `PENDING`, `PROCESSING`, `SUCCESSFUL`, `FAILED`     | no       |
+| `transactionHash`    | `string` | The hash of the transaction. It will be set once the transaction is broadcasted                     | yes      |
+
