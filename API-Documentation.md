@@ -18,7 +18,10 @@ API Documentation
   - [Email Setup](#email-setup)
   - [Shopper](#shopper)
   - [Payment](#payment)
-
+  - [Item](#item)
+  - [Fund TX Data](#fund-transaction-data)
+  - [Generic Transaction](#generic-transaction)
+  
 ## Resources
 ___
 ### 1. API Users
