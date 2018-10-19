@@ -19,29 +19,21 @@ ___
 ### 2. Create User
 
 The creation of organization is performed by LimePay's support and it is part of the onboarding process.
-
 ___
-
-Once you have a registered Organization and user, you could proceed with the integration.
 
 ### 3. Create API User
 
-The API user is a pair of `API Key` and `secret` that is used for authentication. In order for you to create `API User` you will need your `user` credentials.
-
-For more information on how to get API credentials, see the `API Users` resource in the `API Documentation`
+The creation of API Credentials is performed by LimePay's support and it is part of the onboarding process.
 ___
 
 ### 4. Create Vendor
 
-The next step is to create a vendor which is used to register you in our Payment provider for processing the card payments. 
-
-For more information on how to create vendor, see the `Vendors` resource in the `API Documentation`
-
+The creation of Vendor is performed by LimePay's support and it is part of the onboarding process.
 ___
 
 ### 5. Create Shopper
 
-Whenever you are charging a new user, you must register him as a shopper in LimePay. Once registered you do not need to register him again for every charge after that. If the user is a already registered and you have already charged him you do not need to register him as a shopper in LimePay.
+Whenever you are charging a new user, you must register him as a shopper in LimePay. Once registered you do not need to register him again for every charge after that. If the user is already registered/created you do not need to register him again.
 **Important** to notice is that whenever you are creating a shopper you provide the `walletAddress`.
 This address will be then funded whenever you are creating Payments for that specific shopper.
 **The shopper's wallet address should be the same as the one who signs transactions. If this is not the case, the payment will `fail`.**  
@@ -54,7 +46,9 @@ Once you have completed the steps above (have Organization, User, API cretendtia
 Whenever you create a Payment, you must provide the following data: 
  - `vendor` - The Vendor who will charge the shopper's credit card and will receive the fiat funds.
  - `shopper` - The Shopper who will be charged
+ - `items` - Array of `item` objects, containing `description`, `amount` and `quantity`
  - `fundTXData` - This object represents the `token` and `ethers` amount that will be needed for the Payment to be executed.
+ - `genericTransactions` - This is an array of objects that represent a single generic transaction that the shopper will later on have to sign. The data in the `genericTransaction` consists of `gasPrice`, `gasLimit`, `to`, `functionName` and `params`. These parameters are used for validation of the signed transactions that will be sent from the UI, signed by the shopper. All properties should be strict equal (the properties provided when creating the payment and the data in the signed transaction once it is decoded) except for one - `gasPrice` - when we validate the gas price in the signed transaction, we have a buffer, for example if the provided gasPrice when creating the payment is `10000` but the transaction is signed with `11000` - the validation would not fail.  
 
 If your payment requires for example `100 tokens X` and no `ethers` (meaning that you charge only with `tokens`), the value for `tokenAmount` must be set to `100` and the value for `ethersAmount` should be set to `Y` where `Y = gasPrice * required gas`. Simply put: the `token` and `ethers` are the amounts that we are going to fund the `shopper's` wallet with. If the values are not correct, after we fund the shopper and broadcast his _signed transactions_[[1](#1)] , they will fail. If the `ethers` amount is not enought for the execution of the shopper's _signed transactions_[[1](#1)]  - the payment will `fail`. 
 
@@ -118,6 +112,7 @@ Must have requirements:
 The config object must have the following structure:
 ```javascript
 let limePayConfig = {
+    URL: "base url of limepay"
     signingTxCallback: function () {
         // Function that returns array of signed transactions
         returns [];
@@ -134,6 +129,8 @@ let limePayConfig = {
     }
 }
 ```
+
+The property `URL` sets the base url for all of the requests towards LimePay API.
 
 The property `signingTxCallback` must be a function that is performing the signing of the transactions. It must return array of the **signed** transactions. More details of how we can implement the function can be found in [signing transactions](#signing-transactions) section.
 **Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
@@ -162,20 +159,14 @@ The provided sample below shows how you can achieve the signing.
 You can use the `TransactionsBuilder` tool in `limepay-web` to sign transactions.
 
 ```javascript
-let txBuilder = new LimePayWeb.TransactionsBuilder(jsonWallet, password);
+let txBuilder = LimePayWeb.TransactionsBuilder.buildSignedTransactions(jsonWallet, password, transactions);
 ```
 
-The `TransactionsBuilder` has 2 parameters. The first one being the `jsonWallet` and second one the `password` or the `passphrase` that unlocks the JSON wallet. 
+The `TransactionsBuilder` has 3 parameters. The first one being the `jsonWallet` and second one the `password` or the `passphrase` that unlocks the JSON wallet and the third one - the transactions that will be signed.
 
-**Note:** Keep in mind that the provided `jsonWallet` will be the **signer** of the transactions, meaning that this must be the wallet of the user that is going to be charged, and is registered as `shopper` in LimePay. It is your responsibility to keep the wallet address up-to-date, meaning that if you change the `jsonWallet` of your shopper, you must change `walletAddress` of the shopper in LimePay.
+**Note:** Keep in mind that the provided `jsonWallet` will be the **signer** of the transactions, meaning that this must be the wallet of the shopper that is going to be charged, and is registered as `shopper` in LimePay. It is your responsibility to keep the wallet address up-to-date, meaning that if you change the `jsonWallet` of your shopper, you must change `walletAddress` of the shopper in LimePay.
 
-The next thing to do is to build the signed transactions:
-
-```javascript
-txBuilder.buildSignedTransactions(transactions);
-```
-
-`.buildSignedTransactions` returns a Promise. If resolved the result will be array of signed transactions. The functions accepts as parameter an array of transactions. 
+`buildSignedTransactions` returns a Promise. If resolved the result will be array of signed transactions. 
 
 The transactions array contains objects of type:
 ```javascript
@@ -211,14 +202,12 @@ let transactions = [
     }
 ];
 
-let txBuilder = new LimePayWeb.TransactionsBuilder(jsonWallet, password);
-let result = await txBuilder.buildSignedTransactions(transactions);
+let result = await LimePayWeb.TransactionsBuilder.buildSignedTransactions(result.jsonWallet, password, transactions);
 // The result will be ["rawSignedTransaction0", "rawSignedTransaction1"]
 ```
 
-In this example, the first transaction will be `approve` transaction that is going to callthe Token contract and `approve` the service contract to `charge` 1 token.
+In this example, the first transaction will be `approve` transaction that is going to call the Token contract and `approve` the service contract to `charge` 1 token.
 
 The second transaction will call the service contract and execute the `buySomeService` function.
 
-
-#### For more information and examples of how to integrate with LimePay, you can check the `sample-projects` repo
+#### For more information and examples of how to integrate with LimePay, you can check the `sample-projects` repository
