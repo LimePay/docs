@@ -44,21 +44,21 @@ For more information on how to create a shopper, see the `Shoppers` resource in 
 
 Once you have completed the steps above (have Organization, User, API cretendtials, Vendor and a Shopper), you could proceed with creating a payment.
 Whenever you create a Payment, you must provide the following data: 
- - `vendor` - The Vendor who will charge the shopper's credit card and will receive the fiat funds.
  - `shopper` - The Shopper who will be charged
  - `items` - Array of `item` objects, containing `description`, `amount` and `quantity`
  - `fundTXData` - This object represents the `token` and `ethers` amount that will be needed for the Payment to be executed.
- - `genericTransactions` - This is an array of objects that represent a single generic transaction that the shopper will later on have to sign. The data in the `genericTransaction` consists of `gasPrice`, `gasLimit`, `to`, `functionName` and `params`. These parameters are used for validation of the signed transactions that will be sent from the UI, signed by the shopper. All properties should be strict equal (the properties provided when creating the payment and the data in the signed transaction once it is decoded) except for one - `gasPrice` - when we validate the gas price in the signed transaction, we have a buffer, for example if the provided gasPrice when creating the payment is `10000` but the transaction is signed with `11000` - the validation would not fail.  
+ - `genericTransactions` - This is an array of `genericTransaction` objects that represent a single generic transaction that the shopper will later on have to sign. The data in the `genericTransaction` consists of `gasPrice`, `gasLimit`, `to`, `functionName` and `params`. These parameters are used for validation of the signed transactions that will be sent from the UI (signed by the shopper).
 
-If your payment requires for example `100 tokens X` and no `ethers` (meaning that you charge only with `tokens`), the value for `tokenAmount` must be set to `100` and the value for `ethersAmount` should be set to `Y` where `Y = gasPrice * required gas`. Simply put: the `token` and `ethers` are the amounts that we are going to fund the `shopper's` wallet with. If the values are not correct, after we fund the shopper and broadcast his _signed transactions_[[1](#1)] , they will fail. If the `ethers` amount is not enought for the execution of the shopper's _signed transactions_[[1](#1)]  - the payment will `fail`. 
+If your payment requires for example `100 tokens X` and no `ethers` (meaning that you charge only with `tokens`), the value for `tokenAmount` must be set to `100` and the value for `ethersAmount` should be set to `Y` where `Y = gasPrice * required gas`.
+Simply put - the `token` and `ethers` are the amounts that we are going to fund the `shopper's` wallet with. If the values are not correct, after we fund the shopper and broadcast his _signed transactions_[[1](#1)] , they will fail. If the `ethers` amount is not enought for the execution of the shopper's _signed transactions_[[1](#1)]  - the payment will `fail`. 
 
-**As a result of the request you will receive `x-lime-token` as a header parameter. This token must be used to initialize the check-out form!**
+**As a result of the request you will receive `x-lime-token` as a header parameter. This token is used to initialize the check-out form!**
 
 **Summary:** The values that you provide for `tokenAmount` and `etherAmount` are crucial. In the `etherAmount` value you not only set the `ethers` that your signed transactions will charge the shopper, but the `required gas` for the execution of the _signed transactions_[[1](#1)] as-well. 
 
 For more information on how to create a payment, see the `Payments` Resource in the `API Documentation`
 
-[[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. If your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - executing transaction for buying your product/service. 
+[[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. For example, if your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - transaction for buying your product/service. 
 **Important:** The transactions are provided as an array and are executed sequentially in their order in the array!
 
 ### 7. Initialize LimePay's Checkout form
@@ -67,7 +67,7 @@ For more information on how to create a payment, see the `Payments` Resource in 
 You are required to add the following HTML form into your applicaiton:
 
 ```HTML
-    <form id="checkout-form" onsubmit="LimePayWeb.PaymentService.processPayment()">
+    <form id="checkout-form" onsubmit="processPayment()">
         <div class="row">
             <!--Field for CCN -->
             <div class="form-group col-xs-9">
@@ -100,11 +100,13 @@ You are required to add the following HTML form into your applicaiton:
 ```
 
 Must have requirements:
-- Have a form, with attributes `id="checkout-form"` and `onsubmit="LimePayWeb.PaymentService.processPayment()"`.
+- Have a form, with attributes `id="checkout-form"`.
 - Have element with attributes `id="card-number"` and `data-bluesnap="ccn"`
 - Have element with attributes `id="cvv"` and `data-bluesnap="cvv"`
 - Have element with attributes `id="exp-date"` and `data-bluesnap="exp"`
 - Have button with attributes `id="submit-button"` and `type="submit"` 
+
+**Note**: `processPayment()` is a function that you define and implement.
 
 3) You will need to `npm install limepay-web` and `require` it OR include the provided `lime-pay.min.js`
 
@@ -113,10 +115,6 @@ The config object must have the following structure:
 ```javascript
 let limePayConfig = {
     URL: "base url of limepay"
-    signingTxCallback: function () {
-        // Function that returns array of signed transactions
-        returns [];
-    },
     eventHandler: {
         onSuccessfulSubmit: function () {
             alert('Your payment was send for processing');
@@ -130,10 +128,7 @@ let limePayConfig = {
 }
 ```
 
-The property `URL` sets the base url for all of the requests towards LimePay API.
-
-The property `signingTxCallback` must be a function that is performing the signing of the transactions. It must return array of the **signed** transactions. More details of how we can implement the function can be found in [signing transactions](#signing-transactions) section.
-**Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
+The property `URL` sets the base url for all of the requests towards LimePay API and the properties defined in `eventHandler` - `onSuccessfulSubmit` and `onFailedSubmit` are event handlers that are called once a payment has been submitted or fails respectively.
 
 5) Initialize the checkout:
 The provided sample below is the `require` and not the `lime-pay.min.js` option
@@ -148,6 +143,26 @@ LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
 ```
 
 The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
+
+### 7. Processing Payment
+
+Once `processPayment()` is called (based on our example above), one must call `LimePayWeb.PaymentService.processPayment()` and provide the 2 required parameters - `cardHolderInformation` and `signedTransactions`. 
+
+`cardHolderInformation` is an object with the following properties: 
+```javascript
+let cardHolderInformation = {
+    vatNumber: "123123" // VAT Number provided by the customer. Not required
+    name: "" // Customer or Business Name. Required field
+    countryCode: "us" // Country code. Required field
+    zip: "1414" // ZIP code of the shopper/business. Required field
+    street: "some address"  // Street address of the shopper/business. Required field
+    isCompany: true // true/false properties. Required field
+}
+```
+
+`signedTransactions` is an array of **signed** transactions. More details of how one could sign the transactions can be found in [signing transactions](#signing-transactions) section.
+
+**Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
 
 ### 8. Signing Transactions
 
