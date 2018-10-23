@@ -9,7 +9,7 @@ Getting Started
 - [Create Vendor](#4-create-vendor)
 - [Create Shopper](#5-create-shopper)
 - [Create Payment](#6-create-payment)
-- [Initialize LimePay Checkout form](#7-initialize-limePay-checkout-form)
+- [Initialize LimePay's Checkout form](#7-initialize-limePay-checkout-form)
 - [Processing Payment](#8-processing-payment)
 - [Signing Transactions](#9-signing-transactions)
 - [Invoice/Receipt Configuration](#10-invoicereceipt-configuration)
@@ -73,7 +73,7 @@ For more information on how to create a payment, see the `Payments` Resource in 
 ___
 
 
-### 7. Initialize LimePay Checkout form
+### 7. Initialize LimePay's Checkout form
 
 1) Add the HTML Form in your application.
 You are required to add the following HTML form into your applicaiton:
