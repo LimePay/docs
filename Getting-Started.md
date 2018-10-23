@@ -253,7 +253,7 @@ This section describes how one can activate and configure invoice/receipt featur
 
 1. You have to provide the on-boarding team a valid email [(receiptEmail)](https://github.com/LimePay/docs/blob/master/API-Documentation.md#vendor) from which LimePay will send invoices/receipts to your shoppers.    
 
-In order for you to automatically send invoices or receipts on successful payment through LimePay you must request the features from the on-boarding team
+	In order for you to automatically send invoices or receipts on successful payment through LimePay you must request the features from the on-boarding team
 
 	1) Tell on-boarding team to activate automatic invoice feature
 	2) Tell on-boarding team to activate automatic receipt feature
