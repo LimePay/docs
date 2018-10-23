@@ -23,7 +23,7 @@ ___
 
 ### 2. Create User
 
-The creation of organization is performed by LimePay's support and it is part of the on-boarding process.
+The creation of user is performed by LimePay's support and it is part of the on-boarding process.
 ___
 
 ### 3. Create API User
