@@ -447,8 +447,8 @@ Possible values for `payoutType`:
 
 | Attribute       | Type      | Description                                                                     | Nullable |
 | --------------- | --------  | ------------------------------------------------------------------------------- | -------- |
-| `taxRate`       | `decimal` | Value added tax rate for payments in Europe countries 							| yes      |
-| `taxAmount`     | `decimal` | Value added tax fiat amount for payments in Europe countries                    | yes      |
+| `taxRate`       | `decimal` | Tax rate for the payment. Depends on the country of the Vendor 					| yes      |
+| `taxAmount`     | `decimal` | Tax amount of the payment. Calculated with taxRate and the baseAmount             | yes      |
 | `baseAmount`    | `decimal` | Payment amount without tax                                                      | no       |
 | `totalAmount`   | `decimal` | Payment amount with tax (if any)      											| no       |
 | `cardHolder`    | `object`  | [Card Holder](#card-holder) object                                              | no       |
@@ -459,7 +459,7 @@ Possible values for `payoutType`:
 
 | Attribute       | Type      | Description                                                                     | Nullable |
 | --------------- | --------  | ------------------------------------------------------------------------------- | -------- |
-| `vatNumber`     | `string`  | For companies in Europe 														| yes      |
+| `vatNumber`     | `string`  | `vatNumber` of the shopper 														| yes      |
 | `name`     	  | `string`  | Personal/Company name of the shopper                                    		| no       |
 | `isCompany`     | `boolean` | If the shopper is company                                                       | no       |
 | `country`       | `string`  | Shopper's country 																| no       |

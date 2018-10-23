@@ -18,23 +18,23 @@ In order to process payments through credit card, one would need to have organiz
 The steps that are required for the creation and configuration are described below. 
 ___
 ### 1. Create Organization
-The creation of organization is performed by LimePay's support and it is part of the onboarding process.
+The creation of organization is performed by LimePay's support and it is part of the on-boarding process.
 ___
 
 ### 2. Create User
 
-The creation of organization is performed by LimePay's support and it is part of the onboarding process.
+The creation of organization is performed by LimePay's support and it is part of the on-boarding process.
 ___
 
 ### 3. Create API User
 
-The creation of API Credentials is performed by LimePay's support and it is part of the onboarding process.
+The creation of API Credentials is performed by LimePay's support and it is part of the on-boarding process.
 ___
 
 ### 4. Create Vendor
 
-The creation of Vendor is performed by LimePay's support and it is part of the onboarding process.  
-There are some [invoice/receipt configuration](#invoce/receipt-configuration) that you might want to be included on onboarding process.
+The creation of Vendor is performed by LimePay's support and it is part of the on-boarding process.  
+There are some [invoice/receipt configuration](#invoce/receipt-configuration) that you might want to be included in the on-boarding process.
 ___
 
 ### 5. Create Shopper
@@ -50,7 +50,7 @@ ___
 
 ### 6. Create Payment
 
-Once you have been onboarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating a payment.
+Once you have been on-boarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating a payment.
 Whenever you create a Payment, you must provide the following data: 
  - `shopper` - The Shopper who will be charged
  - `currency` - The currency in which the amounts are calculated
@@ -247,24 +247,24 @@ ___
 
 ### 10. Invoice/Receipt configuration
 
-This section describes how one can activate and configure invoice/receipt feature so his customers can receive emails.
+This section describes how one can activate and configure invoice/receipt feature so one's customers can receive emails.
 
 * ##### Activation steps 
 
-1. You have to provide onboarding team a valid email [(receiptEmail)](https://github.com/LimePay/docs/blob/master/API-Documentation.md#vendor) from which LimePay will send invoices/receipts to your shoppers.   
-For automatically send invoice/receipt on successful payment you have two options:   
+1. You have to provide the on-boarding team a valid email [(receiptEmail)](https://github.com/LimePay/docs/blob/master/API-Documentation.md#vendor) from which LimePay will send invoices/receipts to your shoppers.   
+In order for you to automatically send invoices or receipts on successful payment through LimePay you must request the features from the on-boarding team
 
-	1) Tell onboarding team to activate automatic invoice feature
-	2) Tell onboarding team to activate automatic receipt feature
+	1) Tell on-boarding team to activate automatic invoice feature
+	2) Tell on-boarding team to activate automatic receipt feature
   
-**Important!**  You can manually send an invoice via [rest API call](#TODOLINK), but a receipt can be send only if the **automatic receipt** feature is enabled.
+**Important!**  You can manually send an invoice via [rest API call](#TODOLINK), but the receipts however can be send only if the **automatic receipt** feature is enabled.
 
 
 * ##### Configuration steps
 
-**Important** If you do not provide onboard team some configuration the default one will be used.
+**Important** If you do not provide the on-boarding team with the configuration that you want, the default one will be used.
 
-You can provide onboarding team four templates:  
+There are templates for four different components: 
 1. Invoice email subject. ( **Default** - Invoice )
 2. Receipt email subject. ( **Default** - Receipt )
 3. Invoice body header text. ( **Default** - Thank you for your purchase. Below is your invoice! )
