@@ -9,7 +9,7 @@ Getting Started
 - [Create Vendor](#4-create-vendor)
 - [Create Shopper](#5-create-shopper)
 - [Create Payment](#6-create-payment)
-- [Initialize LimePay's Checkout form](#7-initialize-limePay-checkout-form)
+- [Initialize LimePay's Checkout form](#7-initialize-limepays-checkout-form)
 - [Processing Payment](#8-processing-payment)
 - [Signing Transactions](#9-signing-transactions)
 - [Invoice/Receipt Configuration](#10-invoicereceipt-configuration)
