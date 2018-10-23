@@ -34,7 +34,7 @@ ___
 ### 4. Create Vendor
 
 The creation of Vendor is performed by LimePay's support and it is part of the on-boarding process.  
-There are some [invoice/receipt configuration](#invoce/receipt-configuration) that you might want to be included in the on-boarding process.
+There are some [invoice/receipt configuration](#10-invoicereceipt-configuration) that you might want to be included in the on-boarding process.
 ___
 
 ### 5. Create Shopper
@@ -258,7 +258,7 @@ This section describes how one can activate and configure invoice/receipt featur
 	1) Tell on-boarding team to activate automatic invoice feature
 	2) Tell on-boarding team to activate automatic receipt feature
   
-**Important!**  You can manually send an invoice via [rest API call](#TODOLINK), but the receipts however can be send only if the **automatic receipt** feature is enabled.
+**Important!**  You can manually send an invoice via [rest API call](https://github.com/LimePay/docs/blob/master/API-Documentation.md#52-send-invoice), but the receipts however can be send only if the **automatic receipt** feature is enabled.
 
 
 * ##### Configuration steps
