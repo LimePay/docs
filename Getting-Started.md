@@ -38,7 +38,7 @@ Whenever you are charging a new user, you must register him as a shopper in Lime
 This address will be then funded whenever you are creating Payments for that specific shopper.
 **The shopper's wallet address should be the same as the one who signs transactions. If this is not the case, the payment will `fail`.**  
 
-For more information on how to create a shopper, see the `Shoppers` resource in the `API Documentation`
+For more information on how to create a shopper, see the [Shoppers](https://github.com/LimePay/docs/blob/initial-documentation/API-Documentation.md#shopper) resource in the `API Documentation`
 
 ### 6. Create Payment
 
@@ -225,4 +225,4 @@ In this example, the first transaction will be `approve` transaction that is goi
 
 The second transaction will call the service contract and execute the `buySomeService` function.
 
-#### For more information and examples of how to integrate with LimePay, you can check the `sample-projects` repository
+#### For more information and examples of how to integrate with LimePay, you can check the [sample-projects](https://github.com/LimePay/sample-projects) repository
