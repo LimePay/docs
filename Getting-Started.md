@@ -9,10 +9,10 @@ Getting Started
 - [Create Vendor](#4-create-vendor)
 - [Create Shopper](#5-create-shopper)
 - [Create Payment](#6-create-payment)
-- [Initialize LimePay's Checkout form](#7-initialize-limePay's-checkout-form)
+- [Initialize LimePay's Checkout form](#7-initialize-limePay-s-checkout-form)
 - [Processing Payment](#8-processing-payment)
 - [Signing Transactions](#9-signing-transactions)
-- [Invoice/Receipt Configuration](#10-invoice/receipt-configuration)
+- [Invoice/Receipt Configuration](#10-invoice-receipt-configuration)
 
 In order to process payments through credit card, one would need to have organization, user, vendor and api-user created in LimePay.
 The steps that are required for the creation and configuration are described below. 
