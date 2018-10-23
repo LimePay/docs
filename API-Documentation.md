@@ -73,7 +73,7 @@ The source is located at `/v1/vendors` and it is restricted resource. One could 
 The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
 
 #### 2.1 Creating Vendor
-##### ***Notice**: The Creation of Vendors is **NOT** be accessible for now. Once we make it accessible, we will update the documentation.* 
+##### ***Notice**: The Creation of Vendors is **NOT** accessible for now. Once we make it accessible, we will update the documentation.* 
 In order to create Vendor one should execute the following request:
 
     POST /v1/vendors
@@ -116,7 +116,7 @@ In order to get all Vendors one should execute the following request:
 Returns array of [Vendor](#vendor) objects
 
 #### 2.4 Update Vendor
-##### ***Notice**: The Update of Vendor is **NOT** be accessible for now. Once we make it accessible, we will update the documentation.* 
+##### ***Notice**: The Update of Vendor is **NOT** accessible for now. Once we make it accessible, we will update the documentation.* 
 In order to update Vendor's properties one should execute the following request:
 
     PATCH /v1/vendors/:id
@@ -137,7 +137,6 @@ Body data:
 | `vendorPrincipal`        | `object` | [Vendor Principal](#vendor-principal) object                                       | yes      |
 | `emailSetup`             | `object` | [Email Setup](#email-setup) object                                                 | yes      |
 | `defaultPayoutCurrency`  | `string` | Currency code (ISO 4217) for the default payout currency                           | yes      |
-| `vendorStatus`           | `string` | Vendor status. Can be [X,Y,Z] TODO                                                 | yes      |
 | `state`                  | `string` | Vendor state                                                                       | no, if country is not `US` or `CA` |
 
 Returns object of type [Vendor](#vendor) 
@@ -163,12 +162,8 @@ Body data:
 | `lastName`               | `string` | Last name of shopper                                                               | yes      |
 | `email`                  | `string` | Shopper email                                                                      | yes      |
 | `vendor`                 | `string` | The ID of the Vendor.                                                              | yes      |
-| `zip`                    | `string` | Shopper's zip code                                                                 | yes      |
 | `walletAddress`          | `string` | Shopper's wallet address                                                           | yes      |
-| `vatId`                  | `string` | The company’s VAT number                                                           | no       |
-| `taxId`                  | `string` | The company’s business ID number                                                   | no       |
 
-*Note*: You do not need to specify `vatId` if you specified `taxId` and vice versa.
 Returns object of type [Shopper](#shopper) 
 
 #### 3.2 Getting Shopper
@@ -260,15 +255,15 @@ ___
 | `name`                   | `string` | Vendor name. (Company's name)                                                      | no       |
 | `email`                  | `string` | Vendor email                                                                       | no       |
 | `country`                | `string` | Country code                                                                       | no       |
-| `city`                   | `string` | Vendor's city                                                                      | yes       |
+| `city`                   | `string` | Vendor's city                                                                      | no       |
 | `firstName`              | `string` | First name of Vendor (if individual vendor, not business)                          | yes      |
 | `lastName`               | `string` | First name of Vendor (if individual vendor, not business)                          | yes      |
-| `address`                | `string` | Vendor's street address                                                            | yes       |
+| `address`                | `string` | Vendor's street address                                                            | no       |
 | `phone`                  | `string` | Vendor's phone                                                                     | yes       |
-| `zip`                    | `string` | The zip of the vendor                                                              | yes      |
+| `zip`                    | `string` | The zip of the vendor                                                              | no      |
 | `state`                  | `string` | Vendor state                                                                       | yes, if country is not `US` or `CA` |
-| `vatId`                  | `string` | The company’s VAT number                                                           | yes      |
-| `taxId`                  | `string` | The company’s business ID number                                                   | yes      |
+| `vatId`                  | `string` | The company’s VAT number                                                           | yes, if `taxId` is set      |
+| `taxId`                  | `string` | The company’s business ID number                                                   | yes, if `vatId` is set      |
 | `payoutInfo`             | `array`  | Array of [Payout Info](#payout-info) objects                                       | no       |
 | `vendorPrincipal`        | `object` | [Vendor Principal](#vendor-principal) object                                       | no       |
 | `receiptEmail`           | `string` | The email from which the receipts and invoices will be sent                        | no       |
@@ -344,14 +339,14 @@ Possible values for `payoutType`:
 #### Receipt
 | Attribute                | Type     | Description                                                                        | Nullable |
 | ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
-| `subject`                | `string` | The subject that will be shown when sending receipt to shoppers.                   | yes      |
-| `bodyHeaderText`         | `string` | The subject that will be shown when sending receipt to shoppers.                   | yes      |
+| `subject`                | `string` | The email subject that will be shown when sending receipt to shoppers.                   | yes      |
+| `bodyHeaderText`         | `string` | The body header text that will be shown on top of the receipt document when sending receipt to shoppers.                   | yes      |
 
 #### Invoice
 | Attribute                | Type     | Description                                                                        | Nullable |
 | ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
-| `subject`                | `string` | The subject that will be shown when sending invoice to shoppers.                   | yes      |
-| `bodyHeaderText`         | `string` | The subject that will be shown when sending invoice to shoppers.                   | yes      |
+| `subject`                | `string` | The email subject that will be shown when sending invoice to shoppers.                   | yes      |
+| `bodyHeaderText`         | `string` | The body header text that will be shown on top of the invoice document when sending invoice to shoppers.                   | yes      |
 
 ### Shopper
 | Attribute                | Type     | Description                                                                        | Nullable |
@@ -360,11 +355,8 @@ Possible values for `payoutType`:
 | `vendor`                 | `string` | The vendor's name for which the shopper is created.                                | no       |
 | `firstName`              | `string` | Shopper's first name                                                               | no       |
 | `lastName`               | `string` | Shopper's last name                                                                | no       |
-| `zip`                    | `string` | Shopper's zip                                                                      | no       |
 | `email`                  | `string` | Shopper email                                                                      | no       |
 | `walletAddress`          | `string` | Shopper wallet address                                                             | no       |
-| `vatId`                  | `string` | The shopper’s VAT number                                                           | yes      |
-| `taxId`                  | `string` | The shopper’s TAX ID number                                                        | yes      |
 | `maliciousAttempts`      | `integer`| The number of malicious attemps for a shopper. It is incremented when a given signed transaction reverts. | no |
 
 ### Payment
@@ -377,7 +369,7 @@ Possible values for `payoutType`:
 | `currency`           | `string` | Currency code (ISO 4217) of the amount to be charged                            | no       |
 | `shopper`            | `string` | The shopperID of the shopper that will be charged                               | no       |
 | `vendor`             | `string` | The vendorID of the vendor that will charge the payment                         | no       |
-| `items`              | `array`  | Objects containing information about the items that are being purchased         | no       |
+| `items`              | `array`  | Array of [Items](#item) objects that are being purchased         | no       |
 | `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | no       |
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | no       |
 | `totalAmount`        | `decimal` | The total amount of the payment, represented in the selected currency          | no       |
@@ -388,7 +380,7 @@ Possible values for `payoutType`:
 | Attribute            | Type     | Description                                                                     | Nullable |
 | -------------------- | -------- | ------------------------------------------------------------------------------- | -------- |
 | `description`        | `string` | Description of the item that is being bought. This information is displayed in the invoice. | no       |
-| `amount`             | `decimal`| Fiat amount of the item                                                         | no       |
+| `lineAmount`             | `decimal`| Fiat amount of the item excluding VAT amount.                                                         | no       |
 | `quantity`           | `integer`| Quantity of the items                                                           | no       |
 
 ### Fund Transaction data
