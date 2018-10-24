@@ -235,8 +235,9 @@ Body data:
 | `fundTxData`         | `object` | [Fund TX Data](#fund-transaction-data) object                                   | yes        |
 | `genericTransactions`| `array`  | Array of [Generic Transaction](#generic-transaction) objects                  	| yes        |
 
-Returns object of type  [Payment](#payment)
-The returned result contains `x-lime-token` as-well. The token is used for the initialization of the LimePay checkout form.
+Returns object of type  [Payment](#payment).
+
+The returned result contains `x-lime-token` as a header. The token is used for the initialization of the LimePay checkout form.
 
 #### 4.2 Getting Payment
 
