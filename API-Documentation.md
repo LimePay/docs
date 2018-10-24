@@ -236,6 +236,7 @@ Body data:
 | `genericTransactions`| `array`  | Array of [Generic Transaction](#generic-transaction) objects                  	| yes        |
 
 Returns object of type  [Payment](#payment)
+The returned result contains `x-lime-token` as-well. The token is used for the initialization of the LimePay checkout form.
 
 #### 4.2 Getting Payment
 
