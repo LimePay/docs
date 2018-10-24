@@ -116,7 +116,6 @@ Must have requirements:
 - Have element with attributes `id="card-number"` and `data-bluesnap="ccn"`
 - Have element with attributes `id="cvv"` and `data-bluesnap="cvv"`
 - Have element with attributes `id="exp-date"` and `data-bluesnap="exp"`
-- Have button with attributes `id="submit-button"` and `type="submit"` 
 
 **Note**: `processPayment()` is a function that you define and implement.
 
