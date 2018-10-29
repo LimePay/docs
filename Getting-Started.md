@@ -155,6 +155,28 @@ LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
 
 The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
 
+### 7.1 Utils
+* calculateVAT (**cardHoldeVATData**)   
+When you initialize LimePayWeb you can get the vat/tax data (if any) for a payment.   
+```javascript
+let cardHoldeVATData = {
+    countryCode: "us", //required
+    isCompany: true/false, // required
+    vatNumber: 123456789 // optional
+}
+
+let vatResult = await LimePayWeb.utils.calculateVAT(cardHoldeVATData);
+
+/* 
+	vatResult contains => 
+      {
+           rate (VAT rate for the payment. Depends on the country of the Vendor)
+           totalVAT (the vat amount for a payment)
+           totalAmount (payment amount + totalVAT)
+      }   
+*/
+```
+
 ___
 
 
