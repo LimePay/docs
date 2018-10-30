@@ -425,7 +425,7 @@ Possible values for `payoutType`:
 | Attribute            | Type     | Description                                                                     | Nullable |
 | -------------------- | -------- | ------------------------------------------------------------------------------- | -------- |
 | `_id`                | `string` | The id of the payment                                                           | no       |
-| `status`             | `string` | The [status](payment-statuses) of the Payment                                   | no       |
+| `status`             | `string` | The [status](#payment-statuses) of the Payment                                   | no       |
 | `date`               | `date`   | The date time when the payment was created                                      | no       |
 | `currency`           | `string` | Currency code (ISO 4217) of the amount to be charged                            | no       |
 | `shopper`            | `string` | The shopperID of the shopper that will be charged                               | no       |
