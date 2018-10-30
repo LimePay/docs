@@ -425,7 +425,7 @@ Possible values for `payoutType`:
 | Attribute            | Type     | Description                                                                     | Nullable |
 | -------------------- | -------- | ------------------------------------------------------------------------------- | -------- |
 | `_id`                | `string` | The id of the payment                                                           | no       |
-| `status`             | `string` | The status of the Payment                                                       | no       |
+| `status`             | `string` | The [status](payment-statuses) of the Payment                                   | no       |
 | `date`               | `date`   | The date time when the payment was created                                      | no       |
 | `currency`           | `string` | Currency code (ISO 4217) of the amount to be charged                            | no       |
 | `shopper`            | `string` | The shopperID of the shopper that will be charged                               | no       |
@@ -434,6 +434,15 @@ Possible values for `payoutType`:
 | `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | no       |
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | no       |
 | `paymentDetails`     | `object` | [Payment Details](#payemnt-details) object  									| no       |
+
+### Payment statuses
+
+| Attribute   | Description                                    					 |                                      
+| ----------- | ---------------------------------------------------------------- |
+| NEW		  | When a payment is created										 |															
+| PROCESSING  | When a payment is sent for processing and all validation passes	 |
+| SUCCESSFUL  |	When a payment is processed without errors						 |
+| FAILED	  |	When a payment is sent for processing but something went wrong	 |
 
 
 ### Item
