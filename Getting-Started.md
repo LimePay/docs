@@ -157,7 +157,9 @@ The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that i
 
 ### 7.1 Utils
 * calculateVAT (**cardHoldeVATData**)   
-When you initialize LimePayWeb you can get the vat/tax data (if any) for a payment.   
+Once you initialize LimePayWeb you can get the vat/tax data (if any) for a payment.  
+**Note!** When you create a new payment, VAT/TAX is not calculated, so you can use this method to calculate and show to your users the **TOTAL amount** they will be charged. 
+
 ```javascript
 let cardHoldeVATData = {
     countryCode: "us", //required
