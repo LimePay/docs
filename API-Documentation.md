@@ -500,4 +500,12 @@ Possible values for `payoutType`:
 | `signedTransaction`  | `string` | Signed transaction by the shoppers private key, that will be broadcasted                            | no       |
 | `status`             | `string `| Status of the transaction. Possible values are: `PENDING`, `PROCESSING`, `SUCCESSFUL`, `FAILED`     | no       |
 | `transactionHash`    | `string` | The hash of the transaction. It will be set once the transaction is broadcasted                     | yes      |
+| `functionParams`     | `array`  | Array of [Function parameter](#function-parameter]) objects. Each object contain information(type,value) of parameter that should be passed to a function   | no/empty array |
+
+### Function parameter
+
+| Attribute            | Type     | Description                                                                                         | Nullable |
+| -------------------- | -------- | --------------------------------------------------------------------------------------------------- | -------- |
+| `value`              | `any`    | value that should be pass to the function                                                           | no       |
+| `type`               | `string` | type of the current value (bool, bool[],  int, int[], uint, uint[], bytes, bytes[], address, address[]) | no       |
 
