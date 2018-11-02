@@ -182,7 +182,31 @@ In order to get all Shoppers one should execute the following request:
 
 Returns array of [Shopper](#shopper) objects 
 
-#### 3.4 Reseting Shopper's malicious attempts
+
+#### 3.4 Update Shopper
+In order to update Shopper's properties one should execute the following request:
+
+    PATCH /v1/shoppers/:id
+
+Body data:
+
+| Field                    | Type     | Description                                                                        | Required |
+| ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
+| `firstName`              | `string` | Shopper's first name                                                               | no       |
+| `lastName`               | `string` | Shopper's last name                                                                | no       |
+| `email`                  | `string` | Shopper email                                                                      | no       |
+| `walletAddress`          | `string` | Shopper wallet address                                                             | no       |
+
+Returns object of type [Shopper](#shopper) 
+
+#### 3.5 Delete Shopper 
+In order to delete Shopper one should execute the following request:
+
+    DELETE /v1/shoppers/:id
+
+If the deletion was successful, HTTP `status` code `200` will be returned 
+
+#### 3.6 Reseting Shopper's malicious attempts
 
 In order to reset the malicious attempts of a Shopper one should execute the following request:
 
