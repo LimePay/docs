@@ -3,32 +3,38 @@ Getting Started
 
 ## Contents
 
-- [Create Organization](#create-organization)
-- [Create User](#create-user)
-- [Create API User](#create-api-user)
-- [Create Vendor](#create-vendor)
-- [Create Payment](#create-payment)
+- [Create Organization](#1-create-organization)
+- [Create User](#2-create-user)
+- [Create API User](#3-create-api-user)
+- [Create Vendor](#4-create-vendor)
+- [Create Shopper](#5-create-shopper)
+- [Create Payment](#6-create-payment)
+- [Initialize LimePay's Checkout form](#7-initialize-limepays-checkout-form)
+- [Processing Payment](#8-processing-payment)
+- [Signing Transactions](#9-signing-transactions)
+- [Invoice/Receipt Configuration](#10-invoicereceipt-configuration)
 
 In order to process payments through credit card, one would need to have organization, user, vendor and api-user created in LimePay.
 The steps that are required for the creation and configuration are described below. 
 ___
 ### 1. Create Organization
-The creation of organization is performed by LimePay's support and it is part of the onboarding process.
+The creation of organization is performed by LimePay's support and it is part of the on-boarding process.
 ___
 
 ### 2. Create User
 
-The creation of organization is performed by LimePay's support and it is part of the onboarding process.
+The creation of user is performed by LimePay's support and it is part of the on-boarding process.
 ___
 
 ### 3. Create API User
 
-The creation of API Credentials is performed by LimePay's support and it is part of the onboarding process.
+The creation of API Credentials is performed by LimePay's support and it is part of the on-boarding process.
 ___
 
 ### 4. Create Vendor
 
-The creation of Vendor is performed by LimePay's support and it is part of the onboarding process.
+The creation of Vendor is performed by LimePay's support and it is part of the on-boarding process.  
+There are some [invoice/receipt configuration](#10-invoicereceipt-configuration) that you might want to be included in the on-boarding process.
 ___
 
 ### 5. Create Shopper
@@ -39,10 +45,12 @@ This address will be then funded whenever you are creating Payments for that spe
 **The shopper's wallet address should be the same as the one who signs transactions. If this is not the case, the payment will `fail`.**  
 
 For more information on how to create a shopper, see the [Shoppers](https://github.com/LimePay/docs/blob/initial-documentation/API-Documentation.md#shopper) resource in the `API Documentation`
+___
+
 
 ### 6. Create Payment
 
-Once you have been onboarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating a payment.
+Once you have been on-boarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating a payment.
 Whenever you create a Payment, you must provide the following data: 
  - `shopper` - The Shopper who will be charged
  - `currency` - The currency in which the amounts are calculated
@@ -61,6 +69,9 @@ For more information on how to create a payment, see the `Payments` Resource in 
 
 [[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. For example, if your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - transaction for buying your product/service. 
 **Important:** The transactions are provided as an array and are executed sequentially in their order in the array!
+
+___
+
 
 ### 7. Initialize LimePay's Checkout form
 
@@ -144,7 +155,34 @@ LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
 
 The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
 
-### 7. Processing Payment
+### 7.1 Utils
+* calculateVAT (**cardHoldeVATData**)   
+Once you initialize LimePayWeb you can get the vat/tax data (if any) for a payment.  
+**Note!** When you create a new payment, VAT/TAX is not calculated, so you can use this method to calculate and show to your users the **TOTAL amount** they will be charged. 
+
+```javascript
+let cardHoldeVATData = {
+    countryCode: "us", //required
+    isCompany: true/false, // required
+    vatNumber: 123456789 // optional
+}
+
+let vatResult = await LimePayWeb.utils.calculateVAT(cardHoldeVATData);
+
+/* 
+	vatResult contains => 
+      {
+           rate (VAT rate for the payment. Depends on the country of the Vendor)
+           totalVAT (the vat amount for a payment)
+           totalAmount (payment amount + totalVAT)
+      }   
+*/
+```
+
+___
+
+
+### 8. Processing Payment
 
 Once `processPayment()` is called (based on our example above), one must call `LimePayWeb.PaymentService.processPayment()` and provide the 2 required parameters - `cardHolderInformation` and `signedTransactions`. 
 
@@ -163,7 +201,10 @@ let cardHolderInformation = {
 `signedTransactions` is an array of **signed** transactions. More details of how one could sign the transactions can be found in [signing transactions](#signing-transactions) section.
 **Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
 
-### 8. Signing Transactions
+___
+
+
+### 9. Signing Transactions
 
 This section describes how we can define/implement the signing of the transactions.
 
@@ -223,5 +264,38 @@ let result = await LimePayWeb.TransactionsBuilder.buildSignedTransactions(result
 In this example, the first transaction will be `approve` transaction that is going to call the Token contract and `approve` the service contract to `charge` 1 token.
 
 The second transaction will call the service contract and execute the `buySomeService` function.
+
+___
+
+
+### 10. Invoice/Receipt configuration
+
+This section describes how one can activate and configure invoice/receipt feature so one's customers can receive emails.
+
+* ##### Activation steps 
+
+1. You have to provide the on-boarding team a valid email [(receiptEmail)](https://github.com/LimePay/docs/blob/master/API-Documentation.md#vendor) from which LimePay will send invoices/receipts to your shoppers.    
+
+	In order for you to automatically send invoices or receipts on successful payment through LimePay you must request the features from the on-boarding team
+
+	1) Tell on-boarding team to activate automatic invoice feature
+	2) Tell on-boarding team to activate automatic receipt feature
+  
+**Important!**  You can manually send an invoice via [rest API call](https://github.com/LimePay/docs/blob/master/API-Documentation.md#52-send-invoice), but the receipts however can be send only if the **automatic receipt** feature is enabled.
+
+
+* ##### Configuration steps
+
+**Important!** If you do not provide the on-boarding team with the configuration that you want, the default one will be used.
+
+There are templates for four different components: 
+1. Invoice email subject. ( **Default** - Invoice )
+2. Receipt email subject. ( **Default** - Receipt )
+3. Invoice body header text. ( **Default** - Thank you for your purchase. Below is your invoice! )
+4. Receipt body header text. ( **Default** - Thank you for your purchase. Below is your receipt! )
+
+Body header text - This is the text in email body shown on top of the invoice/receipt.
+
+
 
 #### For more information and examples of how to integrate with LimePay, you can check the [sample-projects](https://github.com/LimePay/sample-projects) repository
