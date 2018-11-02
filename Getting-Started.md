@@ -48,7 +48,7 @@ Whenever you create a Payment, you must provide the following data:
  - `currency` - The currency in which the amounts are calculated
  - `items` - Array of `item` objects, containing `description`, `lineAmount` and `quantity`
  - `fundTXData` - This object represents the `token` and `ethers` amount that will be needed for the Payment to be executed.
- - `genericTransactions` - This is an array of `genericTransaction` objects that represent a single generic transaction that the shopper will later on have to sign. The data in the `genericTransaction` consists of `gasPrice`, `gasLimit`, `to`, `functionName` and `params`. These parameters are used for validation of the signed transactions that will be sent from the UI (signed by the shopper).
+ - `genericTransactions` - This is an array of `genericTransaction` objects that represent a single generic transaction that the shopper will later on have to sign. The data in the `genericTransaction` consists of `gasPrice`, `gasLimit`, `to`, `functionName` and `functionParams`. These parameters are used for validation of the signed transactions that will be sent from the UI (signed by the shopper).
 
 If your payment requires for example `100 tokens X` and no `ethers` (meaning that you charge only with `tokens`), the value for `tokenAmount` must be set to `100` and the value for `ethersAmount` should be set to `Y` where `Y = gasPrice * required gas`.
 Simply put - the `token` and `ethers` are the amounts that we are going to fund the `shopper's` wallet with. If the values are not correct, after we fund the shopper and broadcast his _signed transactions_[[1](#1)] , they will fail. If the `ethers` amount is not enought for the execution of the shopper's _signed transactions_[[1](#1)]  - the payment will `fail`. 
@@ -105,7 +105,6 @@ Must have requirements:
 - Have element with attributes `id="card-number"` and `data-bluesnap="ccn"`
 - Have element with attributes `id="cvv"` and `data-bluesnap="cvv"`
 - Have element with attributes `id="exp-date"` and `data-bluesnap="exp"`
-- Have button with attributes `id="submit-button"` and `type="submit"` 
 
 **Note**: `processPayment()` is a function that you define and implement.
 
@@ -190,8 +189,8 @@ let transaction = {
     abi: tokenABI, // The ABI of the contract that is deployed at the to address
     gasLimit: 4700000, // The gasLimit of the transaction
     value: 0, // The ethers that are going to be sent along with the transaction
-    fnName: "approve", // The name of the function that must be called
-    params: [...params], // The parameters that are going to be passed to the function
+    functionName: "approve", // The name of the function that must be called
+    functionParams: [...params], // The parameters that are going to be passed to the function
 }
 ```
 
@@ -204,16 +203,16 @@ let transactions = [
         abi: tokenABI,
         gasLimit: 4700000,
         value: 0,
-        fnName: "approve",
-        params: ["0x07F3fB05d8b7aF49450ee675A26A01592F922734", 1]
+        functionName: "approve",
+        functionParams: ["0x07F3fB05d8b7aF49450ee675A26A01592F922734", 1]
     },
     {
         to: '0x07F3fB05d8b7aF49450ee675A26A01592F922734',
         abi: contractABI,
         gasLimit: 4700000,
         value: 0,
-        fnName: "buySomeService",
-        params: ["0x1835f2716ba8f3ede4180c88286b27f070efe985"]
+        functionName: "buySomeService",
+        functionParams: ["0x1835f2716ba8f3ede4180c88286b27f070efe985"]
     }
 ];
 
