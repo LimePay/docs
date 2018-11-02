@@ -494,10 +494,16 @@ Possible values for `payoutType`:
 | -------------------- | -------- | --------------------------------------------------------------------------------------------------- | -------- |
 | `to`                 | `string `| Address that the transaction will be sent to                                                        | no       |
 | `functionName`       | `string` | Name of the smart contract function                                                                 | no       |
-| `params`             | `array`  | Array of strings. The values of the parameters that will be passed to the function                  | no       |
 | `gasPrice`           | `string` | Gas price of the transaction                                                                        | no       |
 | `gasLimit`           | `string` | Gas limit of the transactions                                                                       | no       |
 | `signedTransaction`  | `string` | Signed transaction by the shoppers private key, that will be broadcasted                            | no       |
 | `status`             | `string `| Status of the transaction. Possible values are: `PENDING`, `PROCESSING`, `SUCCESSFUL`, `FAILED`     | no       |
 | `transactionHash`    | `string` | The hash of the transaction. It will be set once the transaction is broadcasted                     | yes      |
+| `functionParams`     | `array`  | Array of [Function parameter](#function-parameter]) objects. Each object contain information(type,value) of parameter that should be passed to a function   | no |
 
+### Function parameter
+
+| Attribute            | Type     | Description                                                                                         | Nullable |
+| -------------------- | -------- | --------------------------------------------------------------------------------------------------- | -------- |
+| `value`              | `any`    | Value that should be passed to the function                                                         | no       |
+| `type`               | `string` | The solidity type of the value. For example: bool, bool[].....                                      | no       |
