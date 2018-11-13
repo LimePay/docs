@@ -223,11 +223,11 @@ let walletConfigurationEncryptedWallet = {
 }
 
 let walletConfigurationDecryptedWallet = {
-    decryptedWallet: ethers.Wallet.createRandom()
+    decryptedWallet: wallet // Decrypted wallet for example created from ethers.Wallet.createRandom()
 }
 
 let walletConfigurationPrivateKey = {
-    privateKey: '0xeacb4d87df63eecc3f056259cb631f925593f2bc93a41d36add12a855991d031'
+    privateKey: 'private key here'
 }
 
 let walletConfigurationMnemonic = {
@@ -240,7 +240,10 @@ let walletConfigurationMnemonic = {
 let txBuilder = LimePayWeb.TransactionsBuilder.buildSignedTransactions(walletConfiguration, transactions);
 ```
 
-The `TransactionsBuilder` has 2 parameters. The first one is the `walletConfiguration` - this configuration should have one of those properties (encryptedWallet, decryptedWallet, privateKey, mnemonic). `encryptedWallet` is an object that has `jsonWallet` and `password` that unlocks the JSON wallet. `decryptedWallet` is unlocked wallet that can be used directly without any processing. From `privateKey` or `mnemonic` would be generated a wallet that can be used, `mnemonic` is an object with `mnemonic`(word list phrase) and `nonEnglishLocaleWorldList`(default value is `null` or two letter country code of used mnemonic language) properties. The second one - the transactions that will be signed.
+The `TransactionsBuilder` has 2 parameters. The first one is the `walletConfiguration` - this configuration should have one of those properties (encryptedWallet, decryptedWallet, privateKey, mnemonic). `encryptedWallet` is an object that has `jsonWallet` and `password` that unlocks the JSON wallet. `decryptedWallet` is unlocked wallet that can be used directly without any processing. 
+If you use `privateKey` or `mnemonic` configuration, the library will load the wallet from the `privateKey` or the `mnemonic` and the loaded wallet will be used to sign the transactions. 
+The `mnemonic` configuration is an object with `mnemonic`(word list phrase) and `nonEnglishLocaleWorldList`(default value is null or two letter country code of used mnemonic language) properties.
+The second parameter is the array of the transactions that will be signed.
 
 **Note:** Keep in mind that the provided `Wallet` will be the **signer** of the transactions, meaning that this must be the wallet of the shopper that is going to be charged, and is registered as `shopper` in LimePay. It is your responsibility to keep the wallet address up-to-date, meaning that if you change the `Wallet` of your shopper, you must change `walletAddress` of the shopper in LimePay.
 
