@@ -214,12 +214,35 @@ The provided sample below shows how you can achieve the signing.
 You can use the `TransactionsBuilder` tool in `limepay-web` to sign transactions.
 
 ```javascript
-let txBuilder = LimePayWeb.TransactionsBuilder.buildSignedTransactions(jsonWallet, password, transactions);
+// examples of wallet configuration
+let walletConfigurationEncryptedWallet = {
+    encryptedWallet: {
+        jsonWallet: wallet,
+        password: password
+    }
+}
+
+let walletConfigurationDecryptedWallet = {
+    decryptedWallet: ethers.Wallet.createRandom()
+}
+
+let walletConfigurationPrivateKey = {
+    privateKey: '0xeacb4d87df63eecc3f056259cb631f925593f2bc93a41d36add12a855991d031'
+}
+
+let walletConfigurationMnemonic = {
+    mnemonic: {
+        mnemonic: 'saddle must leg organ divide fiction cupboard nothing useless flower polar arrive', // || 'alloggio calvario danzare entrare episodio maggio pinguino motivare rotta vero zoccolo svolta'
+        nonEnglishLocaleWorldList: null // default value is 'null' for english, if mnemonic is in italian, these field should be 'it' 
+    }
+}
+
+let txBuilder = LimePayWeb.TransactionsBuilder.buildSignedTransactions(walletConfiguration, transactions);
 ```
 
-The `TransactionsBuilder` has 3 parameters. The first one being the `jsonWallet` and second one the `password` or the `passphrase` that unlocks the JSON wallet and the third one - the transactions that will be signed.
+The `TransactionsBuilder` has 2 parameters. The first one is the `walletConfiguration` - this configuration should have one of those properties (encryptedWallet, decryptedWallet, privateKey, mnemonic). `encryptedWallet` is an object that has `jsonWallet` and `password` that unlocks the JSON wallet. `decryptedWallet` is unlocked wallet that can be used directly without any processing. From `privateKey` or `mnemonic` would be generated a wallet that can be used, `mnemonic` is an object with `mnemonic`(word list phrase) and `nonEnglishLocaleWorldList`(default value is `null` or two letter country code of used mnemonic language) properties. The second one - the transactions that will be signed.
 
-**Note:** Keep in mind that the provided `jsonWallet` will be the **signer** of the transactions, meaning that this must be the wallet of the shopper that is going to be charged, and is registered as `shopper` in LimePay. It is your responsibility to keep the wallet address up-to-date, meaning that if you change the `jsonWallet` of your shopper, you must change `walletAddress` of the shopper in LimePay.
+**Note:** Keep in mind that the provided `Wallet` will be the **signer** of the transactions, meaning that this must be the wallet of the shopper that is going to be charged, and is registered as `shopper` in LimePay. It is your responsibility to keep the wallet address up-to-date, meaning that if you change the `Wallet` of your shopper, you must change `walletAddress` of the shopper in LimePay.
 
 `buildSignedTransactions` returns a Promise. If resolved the result will be array of signed transactions. 
 
