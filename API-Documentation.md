@@ -223,7 +223,7 @@ In order to delete Shopper one should execute the following request:
 
 If the deletion was successful, HTTP `status` code `200` will be returned 
 
-#### 3.6 Reseting Shopper's malicious attempts
+#### 3.6 Resetting Shopper's malicious attempts
 
 In order to reset the malicious attempts of a Shopper one should execute the following request:
 
