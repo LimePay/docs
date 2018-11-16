@@ -79,12 +79,12 @@ Whenever you create a Relayed Payment, you must provide the following data - `sh
 
 For more information on how to create a payments, see the `Payments` Resource in the `API Documentation`
 
-[[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. For example, if your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - transaction for buying your product/service. 
+[[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. For example, if your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - transaction for buying your product/service.<br/>
 **Important:** The transactions are provided as an array and are executed sequentially in their order in the array!
 
 ___
 
-##### 6.2. Initialize LimePay's Checkout form (not required for Relayed Payments)
+##### 6.2. Initialize LimePay's Checkout form (only for Fiat Payments)
 
 1) Add the HTML Form in your application.
 You are required to add the following HTML form into your applicaiton:
