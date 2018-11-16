@@ -65,7 +65,7 @@ Properties that you must provide when creating different payments
  - `genericTransactions` - This is an array of `genericTransaction` objects that represent a single generic transaction that the shopper will later on have to sign. The data in the `genericTransaction` consists of `gasPrice`, `gasLimit`, `to`, `functionName` and `functionParams`. These parameters are used for validation of the signed transactions that will be sent from the UI (signed by the shopper).
 
 If your payment requires for example `100 tokens X` and no `ethers` (meaning that you charge only with `tokens`), the value for `tokenAmount` must be set to `100` and the value for `ethersAmount` should be set to `Y` where `Y = gasPrice * required gas`.
-Simply put - the `token` and `ethers` are the amounts that we are going to fund the `shopper's` wallet with. If the values are not correct, after we fund the shopper and broadcast his _signed transactions_[[1](#1)] , they will fail. If the `ethers` amount is not enought for the execution of the shopper's _signed transactions_[[1](#1)]  - the payment will `fail`. 
+Simply put - the `token` and `ethers` are the amounts that we are going to fund the `shopper's` wallet with. If the values are not correct, after we fund the shopper and broadcast his _signed transactions_[[1](#1)] , they will fail. If the `ethers` amount is not enough for the execution of the shopper's _signed transactions_[[1](#1)]  - the payment will `fail`. 
 
 ###### Fiat Payments
 Whenever you create a Fiat Payment, you must provide the following data - `shopper`, `currency`, `items`, `fundTXData`, `genericTransactions`
