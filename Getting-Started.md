@@ -8,11 +8,10 @@ Getting Started
 - [Create API User](#3-create-api-user)
 - [Create Vendor](#4-create-vendor)
 - [Create Shopper](#5-create-shopper)
-- [Create Payment](#6-create-payment)
-- [Initialize LimePay's Checkout form](#7-initialize-limepays-checkout-form)
-- [Processing Payment](#8-processing-payment)
-- [Signing Transactions](#9-signing-transactions)
-- [Invoice/Receipt Configuration](#10-invoicereceipt-configuration)
+- [Create Payment](#6-payments)
+- [Utils](#7-utils)
+- [Signing Transactions](#8-signing-transactions)
+- [Invoice/Receipt Configuration](#9-invoicereceipt-configuration)
 
 In order to process payments through credit card, one would need to have organization, user, vendor and api-user created in LimePay.
 The steps that are required for the creation and configuration are described below. 
@@ -206,7 +205,10 @@ In order for one to process a relayed payment one should execute `LimePayWeb.Pay
 ___
 
 
-### 7.1 Utils
+### 7 Utils
+
+##### 7.1 Calculate VAT
+
 * calculateVAT (**cardHoldeVATData**)   
 Once you initialize LimePayWeb you can get the vat/tax data (if any) for a payment.  
 **Note!** When you create a new payment, VAT/TAX is not calculated, so you can use this method to calculate and show to your users the **TOTAL amount** they will be charged. 
