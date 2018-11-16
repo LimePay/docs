@@ -47,33 +47,45 @@ This address will be then funded whenever you are creating Payments for that spe
 For more information on how to create a shopper, see the [Shoppers](https://github.com/LimePay/docs/blob/initial-documentation/API-Documentation.md#shopper) resource in the `API Documentation`
 ___
 
+### 6. Payments
 
-### 6. Create Payment
+There are two types of payments - `Fiat` and `Relayed` payments.
+- `Fiat` Payments are used when your user has to be charged with credit card, because he/she does not have ethers/tokens at all, therefore the users
+pay for the ethers and tokens and their intents (blockchain transactions) are executed afterwards
+- `Relayed` Payments are used when your user has tokens for the services he wants to use but does not have ethers for the gas costs, therefore he cannot execute the transactions even though he has the tokens. In this scenario, you as a service provider decide to pay the gas costs of the user in order for him to be able to consume your service. 
 
-Once you have been on-boarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating a payment.
-Whenever you create a Payment, you must provide the following data: 
+##### 6.1. Create Payments
+
+Once you have been on-boarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating payments.
+
+Properties that you must provide when creating different payments 
  - `shopper` - The Shopper who will be charged
- - `currency` - The currency in which the amounts are calculated
- - `items` - Array of `item` objects, containing `description`, `lineAmount` and `quantity`
+ - `currency` - The currency in which the amounts are calculated **(NOT required for `relayed` payment)**
+ - `items` - Array of `item` objects, containing `description`, `lineAmount` and `quantity` **(NOT required for `relayed` payment)**
  - `fundTXData` - This object represents the `token` and `ethers` amount that will be needed for the Payment to be executed.
  - `genericTransactions` - This is an array of `genericTransaction` objects that represent a single generic transaction that the shopper will later on have to sign. The data in the `genericTransaction` consists of `gasPrice`, `gasLimit`, `to`, `functionName` and `functionParams`. These parameters are used for validation of the signed transactions that will be sent from the UI (signed by the shopper).
 
 If your payment requires for example `100 tokens X` and no `ethers` (meaning that you charge only with `tokens`), the value for `tokenAmount` must be set to `100` and the value for `ethersAmount` should be set to `Y` where `Y = gasPrice * required gas`.
 Simply put - the `token` and `ethers` are the amounts that we are going to fund the `shopper's` wallet with. If the values are not correct, after we fund the shopper and broadcast his _signed transactions_[[1](#1)] , they will fail. If the `ethers` amount is not enought for the execution of the shopper's _signed transactions_[[1](#1)]  - the payment will `fail`. 
 
+###### Fiat Payments
+Whenever you create a Fiat Payment, you must provide the following data - `shopper`, `currency`, `items`, `fundTXData`, `genericTransactions`
+
+###### Relayed Payments
+Whenever you create a Relayed Payment, you must provide the following data - `shopper`, `fundTXData`, `genericTransactions`
+
 **As a result of the request you will receive `x-lime-token` as a header parameter. This token is used to initialize the check-out form!**
 
 **Summary:** The values that you provide for `tokenAmount` and `etherAmount` are crucial. In the `etherAmount` value you not only set the `ethers` that your signed transactions will charge the shopper, but the `required gas` for the execution of the _signed transactions_[[1](#1)] as-well. 
 
-For more information on how to create a payment, see the `Payments` Resource in the `API Documentation`
+For more information on how to create a payments, see the `Payments` Resource in the `API Documentation`
 
 [[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. For example, if your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - transaction for buying your product/service. 
 **Important:** The transactions are provided as an array and are executed sequentially in their order in the array!
 
 ___
 
-
-### 7. Initialize LimePay's Checkout form
+##### 6.2. Initialize LimePay's Checkout form (not required for Relayed Payments)
 
 1) Add the HTML Form in your application.
 You are required to add the following HTML form into your applicaiton:
@@ -119,9 +131,11 @@ Must have requirements:
 
 **Note**: `processPayment()` is a function that you define and implement.
 
-2) You will need to `npm install limepay-web` and `require` it OR include the provided `lime-pay.min.js`
+##### 6.3. Initialize LimePay web
 
-3) Define your `config` object: 
+1) You will need to `npm install limepay-web` and `require` it OR include the provided `lime-pay.min.js`
+
+2) Define your `config` object: 
 The config object must have the following structure:
 ```javascript
 let limePayConfig = {
@@ -141,19 +155,56 @@ let limePayConfig = {
 
 The property `URL` sets the base url for all of the requests towards LimePay API and the properties defined in `eventHandler` - `onSuccessfulSubmit` and `onFailedSubmit` are event handlers that are called once a payment has been submitted or fails respectively.
 
-4) Initialize the checkout:
+3) Initialize the checkout:
 The provided sample below is the `require` and not the `lime-pay.min.js` option
 
 ```javascript
 let LimePayWeb = require('limepay-web');
 
+// For Fiat Payments
 LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
+    alert('Form initialization failed');
+    // Implement some logic
+});
+
+// For Relayed Payments
+LimePayWeb.initRelayedPayment(limeToken, limePayConfig).catch((err) => {
     alert('Form initialization failed');
     // Implement some logic
 });
 ```
 
 The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
+
+##### 6.4. Processing Fiat Payment
+
+Once `processPayment()` is called (based on our example above), one must call `LimePayWeb.PaymentService.processPayment()` and provide the 2 required parameters - `cardHolderInformation` and `signedTransactions`. 
+
+`cardHolderInformation` is an object with the following properties: 
+```javascript
+let cardHolderInformation = {
+    vatNumber: "123123" // VAT Number provided by the customer. Not required
+    name: "" // Customer or Business Name. Required field
+    countryCode: "us" // Country code. Required field
+    zip: "1414" // ZIP code of the shopper/business. Required field
+    street: "some address"  // Street address of the shopper/business. Required field
+    isCompany: true // true/false properties. Required field
+}
+```
+
+`signedTransactions` is an array of **signed** transactions. More details of how one could sign the transactions can be found in [signing transactions](#signing-transactions) section.
+**Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
+
+___
+
+##### 6.4. Processing Relayed Payment
+In order for one to process a relayed payment one should execute `LimePayWeb.PaymentService.processRelayedPayment(signedTransactions)` and provide the signed transactions as only parameter.
+
+`signedTransactions` is an array of **signed** transactions. More details of how one could sign the transactions can be found in [signing transactions](#signing-transactions) section.
+**Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
+
+___
+
 
 ### 7.1 Utils
 * calculateVAT (**cardHoldeVATData**)   
@@ -181,30 +232,7 @@ let vatResult = await LimePayWeb.utils.calculateVAT(cardHoldeVATData);
 
 ___
 
-
-### 8. Processing Payment
-
-Once `processPayment()` is called (based on our example above), one must call `LimePayWeb.PaymentService.processPayment()` and provide the 2 required parameters - `cardHolderInformation` and `signedTransactions`. 
-
-`cardHolderInformation` is an object with the following properties: 
-```javascript
-let cardHolderInformation = {
-    vatNumber: "123123" // VAT Number provided by the customer. Not required
-    name: "" // Customer or Business Name. Required field
-    countryCode: "us" // Country code. Required field
-    zip: "1414" // ZIP code of the shopper/business. Required field
-    street: "some address"  // Street address of the shopper/business. Required field
-    isCompany: true // true/false properties. Required field
-}
-```
-
-`signedTransactions` is an array of **signed** transactions. More details of how one could sign the transactions can be found in [signing transactions](#signing-transactions) section.
-**Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
-
-___
-
-
-### 9. Signing Transactions
+### 8. Signing Transactions
 
 This section describes how we can define/implement the signing of the transactions.
 
@@ -283,7 +311,7 @@ let transactions = [
     }
 ];
 
-let result = await LimePayWeb.TransactionsBuilder.buildSignedTransactions(result.jsonWallet, password, transactions);
+let result = await LimePayWeb.TransactionsBuilder.buildSignedTransactions(walletConfiguration, transactions);
 // The result will be ["rawSignedTransaction0", "rawSignedTransaction1"]
 ```
 
@@ -294,7 +322,7 @@ The second transaction will call the service contract and execute the `buySomeSe
 ___
 
 
-### 10. Invoice/Receipt configuration
+### 9. Invoice/Receipt configuration
 
 This section describes how one can activate and configure invoice/receipt feature so one's customers can receive emails.
 
