@@ -73,7 +73,7 @@ Whenever you create a Fiat Payment, you must provide the following data - `shopp
 ###### Relayed Payments
 Whenever you create a Relayed Payment, you must provide the following data - `shopper`, `fundTXData`, `genericTransactions`
 
-**As a result of the request you will receive `x-lime-token` as a header parameter. This token is used to initialize the check-out form!**
+**As a result of the request you will receive `x-lime-token` as a header parameter. This token is used to initialize the limepay-web library and process the payments!**
 
 **Summary:** The values that you provide for `tokenAmount` and `etherAmount` are crucial. In the `etherAmount` value you not only set the `ethers` that your signed transactions will charge the shopper, but the `required gas` for the execution of the _signed transactions_[[1](#1)] as-well. 
 
