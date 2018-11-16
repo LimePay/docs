@@ -173,7 +173,7 @@ LimePayWeb.initRelayedPayment(limeToken, limePayConfig).catch((err) => {
 });
 ```
 
-The `.init()` has 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
+The `.init()` and `.initRelayedPayment()` have 2 parameters. The first parameter is the `x-lime-token` that is received when you create your payment (described in [6. Create Payment](#create-payment)) and the second one is the `config` object that we described in step `2)`
 
 ##### 6.4. Processing Fiat Payment
 
@@ -197,7 +197,7 @@ let cardHolderInformation = {
 ___
 
 ##### 6.4. Processing Relayed Payment
-In order for one to process a relayed payment one should execute `LimePayWeb.PaymentService.processRelayedPayment(signedTransactions)` and provide the signed transactions as only parameter.
+In order for one to process a relayed payment one should execute `LimePayWeb.PaymentService.processRelayedPayment(signedTransactions)` and provide the signed transactions as parameter.
 
 `signedTransactions` is an array of **signed** transactions. More details of how one could sign the transactions can be found in [signing transactions](#signing-transactions) section.
 **Important**: The transactions are executed sequentially, meaning that the execution starts with the first transaction in the array and finishes with the last transaction in the array!
@@ -209,7 +209,6 @@ ___
 
 ##### 7.1 Calculate VAT
 
-* calculateVAT (**cardHoldeVATData**)   
 Once you initialize LimePayWeb you can get the vat/tax data (if any) for a payment.  
 **Note!** When you create a new payment, VAT/TAX is not calculated, so you can use this method to calculate and show to your users the **TOTAL amount** they will be charged. 
 
