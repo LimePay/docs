@@ -243,9 +243,9 @@ The source is located at `/v1/payments` and it is restricted resource. One could
 
 The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
 
-#### 4.1 Creating Payment
+#### 4.1 Creating Fiat Payment
 
-In order to create Payment one should execute the following request:
+In order to create Fiat Payment one should execute the following request:
 
     POST /v1/payments
 
@@ -263,7 +263,25 @@ Returns object of type  [Payment](#payment).
 
 The returned result contains `x-lime-token` as a header. The token is used for the initialization of the LimePay checkout form.
 
-#### 4.2 Getting Payment
+#### 4.2 Creating Relayed Payment
+
+In order to create Relayed Payment one should execute the following request:
+
+    POST /v1/payments/relayed
+
+Body data:
+
+| Field                | Type     |Description                                                                      | Required   |
+| -------------------- | -------- | ------------------------------------------------------------------------------- | ---------- |
+| `shopper`            | `string` | The ID of the shopper that will be charged                                      | yes        |
+| `fundTxData`         | `object` | [Fund TX Data](#fund-transaction-data) object                                   | yes        |
+| `genericTransactions`| `array`  | Array of [Generic Transaction](#generic-transaction) objects                  	| yes        |
+
+Returns object of type  [Payment](#payment).
+
+The returned result contains `x-lime-token` as a header. The token is used for the initialization of the LimePay checkout form.
+
+#### 4.3 Getting Payment
 
 In order to get Payment one should execute the following request:
 
@@ -271,7 +289,7 @@ In order to get Payment one should execute the following request:
 
 Returns object of type  [Payment](#payment)
 
-#### 4.2 Getting all Payments
+#### 4.4 Getting all Payments
 
 In order to get all Payments one should execute:
 
@@ -458,6 +476,7 @@ Possible values for `payoutType`:
 | `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | no       |
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | no       |
 | `paymentDetails`     | `object` | [Payment Details](#payemnt-details) object  									| no       |
+| `type`               | `string` | The type of the payment. Possible values `FIAT_PAYMENT`, `RELAYED_PAYMENT`   	| no       |
 
 ### Payment statuses
 
