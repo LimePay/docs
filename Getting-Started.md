@@ -161,7 +161,7 @@ The provided sample below is the `require` and not the `lime-pay.min.js` option
 let LimePayWeb = require('limepay-web');
 
 // For Fiat Payments
-LimePayWeb.init(limeToken, limePayConfig).catch((err) => {
+LimePayWeb.initFiatPayment(limeToken, limePayConfig).catch((err) => {
     alert('Form initialization failed');
     // Implement some logic
 });
