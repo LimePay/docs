@@ -527,7 +527,7 @@ Possible values for `payoutType`:
 | Attribute            | Type     | Description                                                                                         | Nullable |
 | -------------------- | -------- | --------------------------------------------------------------------------------------------------- | -------- |
 | `weiAmount`          | `string` | wei amount of the payment. This will be the amount of ethers that the shopper will be funded with   | no       |
-| `tokenAmount`        | `string` | token amount of the payment. This will be the amount of tokens that the shopper will be funded with | no       |
+| `tokenAmount`        | `string` | token amount of the payment. This will be the amount of tokens that the shopper will be funded with. **NOTE** If the payment is `relayed`, token amount should not be provided. If you execute `GET` request for a  relayed payment, `tokenAmount` will be `0` | no       |
 | `transactionHash`    | `string` | The hash of the transaction. It will be set once the transaction is executed                        | yes      |
 | `status`             | `string `| The status of the transaction. Possible values are: `PENDING`, `PROCESSING`, `SUCCESSFUL`, `FAILED` | no       |
 
