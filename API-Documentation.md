@@ -538,7 +538,7 @@ Possible values for `payoutType`:
 | `to`                 | `string `| Address that the transaction will be sent to                                                        | no       |
 | `functionName`       | `string` | Name of the smart contract function                                                                 | no       |
 | `gasPrice`           | `string` | Gas price of the transaction                                                                        | no       |
-| `gasLimit`           | `string` | Gas limit of the transactions                                                                       | no       |
+| `gasLimit`           | `integer` | Gas limit of the transactions                                                                       | no       |
 | `signedTransaction`  | `string` | Signed transaction by the shoppers private key, that will be broadcasted                            | no       |
 | `status`             | `string `| Status of the transaction. Possible values are: `PENDING`, `PROCESSING`, `SUCCESSFUL`, `FAILED`     | no       |
 | `transactionHash`    | `string` | The hash of the transaction. It will be set once the transaction is broadcasted                     | yes      |
