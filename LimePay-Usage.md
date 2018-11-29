@@ -65,7 +65,7 @@ In case of invalid VAT number you will get the following error
 }
 ```
 
-**Notice !**  You may have a situation in which  you can get invalid vat response, but the same is valid. This may happen when a country's VAT database is offline for a while.
+You may have a situation in which  you can get invalid vat response, but the same is valid. This may happen when a country's VAT database is offline for a while.
 
 ##### 6.1. Create Payments
 
@@ -96,10 +96,10 @@ For more information on how to create a payments, see the `Payments` Resource in
 [[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. For example, if your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - transaction for buying your product/service.<br/>
 **Important:** The transactions are provided as an array and are executed sequentially in their order in the array!
 
-###### Multiple Shopper Payments
-A shopper is allowed to process payment by payment. That means if a shopper creates a payment and process it, he is not be able to create another one before the first payment finishes it's processing.
+###### Multiple Payments for a Shopper
+Shoppers are restricted to process one payment at a time. That means that if a payment is created for a certain shopper and the payment goes into PROCESSING status, you cannot create another payment for the same shopper until the status of the previous payment is changed to SUCCESSFUL or FAILED
 
-If a shoper tries to create a parallel payment, he would get the following error
+The error that is being returned when you try to create a second payment is the following:
 
 ```javascript
 {
