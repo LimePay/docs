@@ -1,4 +1,4 @@
-Getting Started
+LimePay Usage
 ============
 
 ## Contents
@@ -53,6 +53,20 @@ There are two types of payments - `Fiat` and `Relayed` payments.
 pay for the ethers and tokens and their intents (blockchain transactions) are executed afterwards
 - `Relayed` Payments are used when your user has tokens for the services he wants to use but does not have ethers for the gas costs, therefore he cannot execute the transactions even though he has the tokens. In this scenario, you as a service provider decide to pay the gas costs of the user in order for him to be able to consume your service. 
 
+##### **Important:** 
+Vat Number is validated when a payment is sent for processing. You could not process a payment if the provided VAT number is invalid. 
+
+In case of invalid VAT number you will get the following error  
+```javascript
+{
+    errorName: 'VALIDATION_ERROR',
+    code: 160,
+    message: 'Vat number 123 is invalid'
+}
+```
+
+You may have a situation in which  you can get invalid vat response, but the same is valid. This may happen when a country's VAT database is offline for a while.
+
 ##### 6.1. Create Payments
 
 Once you have been on-boarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating payments.
@@ -82,6 +96,18 @@ For more information on how to create a payments, see the `Payments` Resource in
 [[1](#1)] - The set of transactions that must be executed by the shopper in order for him to buy the service/product. For example, if your dApp charges `tokens`, the first transaction must be `approve` transaction executed at the `Token` contract  and the second one - transaction for buying your product/service.<br/>
 **Important:** The transactions are provided as an array and are executed sequentially in their order in the array!
 
+###### Multiple Payments for a Shopper
+Shoppers are restricted to process one payment at a time. That means that if a payment is created for a certain shopper and the payment goes into PROCESSING status, you cannot create another payment for the same shopper until the status of the previous payment is changed to SUCCESSFUL or FAILED
+
+The error that is being returned when you try to create a second payment is the following:
+
+```javascript
+{
+    errorName: 'PAYMENT_ERROR',
+    code: 6100,
+    message: "Payment can't be created, while another one is in processing state"
+}
+```
 ___
 
 ##### 6.2. Initialize LimePay's Checkout form (only for Fiat Payments)
