@@ -6,9 +6,9 @@ Response Errors
 
 - [Error Code Legend](#0-error-code-legend)
 - [Authorization Errors](#1-authorization-errors)
-- [Ethereum Errors](#2-blockchain-errros)
+- [Blockchain Errors](#2-blockchain-errors)
 - [Not Found Errors](#3-not-found-errors)
-- [Validation Errors](#4-validations-errors)
+- [Validation Errors](#4-validation-errors)
 - [Global Errors](#5-global-errors)
 - [Payment Errors](#6-payment-errors)
 - [Vendor Errors](#7-vendor-errors)
