@@ -28,9 +28,7 @@ Each error code follows a specific format
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
 | `AUTHORIZATION_ERROR` | `1011` | Token is not provided  | You are required to provide Lime Pay token for authorization where it is applicable | Accessing resources which require token authorization |
-| `AUTHORIZATION_ERROR` | `1012` | Some part is missing | You will get this error if you provide us wrong token structure | Accessing resources which require token authorization |
-| `AUTHORIZATION_ERROR` | `1013` | Invalid algorithm | You will get this error if the provided token is calculated with wrong algorithm | Accessing resources which require token authorization |
-| `AUTHORIZATION_ERROR` | `1014` | Failed to verify token | You will get this error if the token provided is invalid | Accessing resources which require token authorization |
+| `AUTHORIZATION_ERROR` | `1012` | Invalid token provided | You will get this error if the token provided is invalid | Accessing resources which require token authorization |
 | `AUTHORIZATION_ERROR` | `1111` | Unauthorized request | You will get this error if your non-token authorization fails | Accessing resources which require non-token authorization |
 
 ### 2. Blockchain Errors
@@ -59,7 +57,7 @@ Each error code follows a specific format
 | `NOT_FOUND_ERROR` | `3013` | Shopper was not found | The requested shopper does not exist | Getting shopper |
 | `NOT_FOUND_ERROR` | `3014` | API User was not found! | The requested API user does not exist | Getting api user |
 | `NOT_FOUND_ERROR` | `3015` | User was not found |The requested user does not exist | Getting user |
-| `NOT_FOUND_ERROR` | `3018` | The record you have searched for does not exists | You will get this error if your searching criteria is invalid | Every time we can not parse searching criteria |
+| `NOT_FOUND_ERROR` | `3018` | The record you have searched for does not exists | You will get this error if your searching criteria is invalid | Every time we cannot parse searching criteria |
 
 
 ### 4. Validation Errors
@@ -70,7 +68,7 @@ Each error code follows a specific format
 | `VALIDATION_ERROR` | `4012` | Missing **{request body object}** data | You will get this error when you do not provide a required object in the request | Everywhere where there is request body with required objects |
 | `VALIDATION_ERROR` | `4013` | Property **{property}** should be an array of objects  | You will get this error when a property is array of objects, but you provide something different | Everywhere where there is request body with array of objects type properties |
 | `VALIDATION_ERROR` | `4111` | Nonexistent country code | You will get this error if you pass non-existing country code to Vendor, CardHolderInformation | Processing Fiat payment / calculating VAT  |
-| `VALIDATION_ERROR` | `4211` | (**Input property**) should be true/false | You will get this error if you pass non-boolean value to CardHolderInformation.isCompany for example | Processing payment |
+| `VALIDATION_ERROR` | `4211` | (**Input property**) should be true/false | You will get this error if you pass non-boolean value to a property which is required to be boolean | Processing payment |
 | `VALIDATION_ERROR` | `4311` | WeiAmount must have non-zero value | You will get this error if your `fundTx.weiAmount` is zero | Creating payment |
 | `VALIDATION_ERROR` | `4411` | Vat number **{vat number here}** is invalid | You will get this error if you pass invalid VAT number in CardHolderInformation | Creating vendor / Processing Fiat payment | 
 | `VALIDATION_ERROR` | `4412` | Vat number is empty | You will get this error if you have vat number as property in CardHolderInformation, but it does not have a value | Creating vendor / Processing Fiat payment |
@@ -93,8 +91,8 @@ Each error code follows a specific format
 | `PAYMENT_ERROR` | `6111` | Payment can't be created, while another one is in processing state | You will get this error if you try to create new payment for a shopper, while another one is in processing state | Creating payment |
 | `PAYMENT_ERROR` | `6112` | Invalid payment amount | The Payment's amount must be bigger than 1 USD| Creating payment |
 | `PAYMENT_ERROR` | `6113` | Transactions with the given currency are not allowed | The provided currency is not supported | Creating payment |
-| `PAYMENT_ERROR` | `6201` | Can not get payment token | You will get this error if for some reason you can not get `Payment Token`. In this case contact support! | Retrieving payment token |
-| `PAYMENT_ERROR` | `6401` | **{payment transaction error}** | You will get this error if Bank returns to us that provided card information is invalid | Processing Fiat payment |
+| `PAYMENT_ERROR` | `6201` | Cannot get payment token | You will get this error if for some reason you cannot get `Payment Token`. In this case contact support! | Retrieving payment token |
+| `PAYMENT_ERROR` | `6401` | **{payment transaction error}** | You will get this error if LimePay's Payment Provider claims that the provided card information is invalid | Processing Fiat payment |
 
 
 ### 7. Shopper Errors
