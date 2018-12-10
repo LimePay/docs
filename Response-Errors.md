@@ -92,7 +92,7 @@ Each error code follows a specific format
 | `PAYMENT_ERROR` | `6112` | Invalid payment amount | The Payment's amount must be bigger than 1 USD| Creating payment |
 | `PAYMENT_ERROR` | `6113` | Transactions with the given currency are not allowed | The provided currency is not supported | Creating payment |
 | `PAYMENT_ERROR` | `6201` | Cannot get payment token | You will get this error if for some reason you cannot get `Payment Token`. In this case contact support! | Retrieving payment token |
-| May Vary | `6401` | **{payment transaction error}** | You will get this error if LimePay's Payment Provider cannot process the payment for some reason. Possible Values for Error name are: `INVALID_AMOUNT`, `PAYMENT_GENERAL_FAILURE`, `VALIDATION_GENERAL_FAILURE`, `XSS_EXCEPTION`, `THREE_D_SECURITY_AUTHENTICATION_REQUIRED`, `AUTHORIZATION_AMOUNT_NOT_VALID`, `CVV_ERROR`, `EXPIRED_CARD`, `HIGH_RISK_ERROR`, `INCORRECT_INFORMATION`, `INSUFFICIENT_FUNDS`, `INVALID_CARD_NUMBER`, 'INVALID_CARD_TYPE', 'LIMIT_EXCEEDED', 'RESTRICTED_CARD', 'THREE_D_SECURE_FAILURE' | Processing Fiat payment |
+| May Vary | `6401` | **{payment transaction error}** | You will get this error if LimePay's Payment Provider cannot process the payment for some reason. Possible Values for Error name are: `INVALID_AMOUNT`, `PAYMENT_GENERAL_FAILURE`, `VALIDATION_GENERAL_FAILURE`, `XSS_EXCEPTION`, `THREE_D_SECURITY_AUTHENTICATION_REQUIRED`, `AUTHORIZATION_AMOUNT_NOT_VALID`, `CVV_ERROR`, `EXPIRED_CARD`, `HIGH_RISK_ERROR`, `INCORRECT_INFORMATION`, `INSUFFICIENT_FUNDS`, `INVALID_CARD_NUMBER`, `INVALID_CARD_TYPE`, `LIMIT_EXCEEDED`, `RESTRICTED_CARD`, `THREE_D_SECURE_FAILURE` | Processing Fiat payment |
 
 
 ### 7. Shopper Errors
