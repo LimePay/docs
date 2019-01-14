@@ -65,8 +65,6 @@ In case of invalid VAT number you will get the following error
 }
 ```
 
-You may have a situation in which  you can get invalid vat response, but the same is valid. This may happen when a country's VAT database is offline for a while.
-
 ##### 6.1. Create Payments
 
 Once you have been on-boarded (have Organization, User, API cretendtials and Vendor) and created a Shopper, you could proceed with creating payments.
