@@ -8,8 +8,8 @@
 - [Creating Payments](#3-creating-payments)
 	- [Payment Data](#31-payment-data)
 - [Processing Payments](#4-processing-payments)
-	- [Fiat Payment](#41-fiat-payment)
-	- [Relayed Payment](#42-relayed-payment)
+	- [Fiat Payment](#41-fiat-payments)
+	- [Relayed Payment](#42-relayed-payments)
 - [Additional Info](#5-additional-info)
 	- [Wallet Configurations](#51-wallet-configurations)
 	- [Signing Transactions](#52-signing-transactions)
@@ -305,7 +305,7 @@ Once the payment is successfully sent for processing, an  `onSuccessfulSubmit`  
 You can monitor the status of the payment through the `limepay` SDK. More information on how to `GET` payments in the [LimePay SDK](https://github.com/LimePay/docs/blob/latest/JavaScript-SDK-documentation.md) documentation.
 
 ### 5. Additional Info
-#### 5.1 Wallet Configuration
+#### 5.1 Wallet Configurations
 
 In order for you to be able to process payments you need to provide the transactions, signed by the user's private key.
 The `.buildSignedTransactions` functionality for payments is flexible and supports different wallet configurations of your user's wallet. Below are some examples of the different wallet configurations.
