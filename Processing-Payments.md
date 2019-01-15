@@ -7,7 +7,7 @@
 - [Payments](#2-payments)
 - [Creating Payments](#3-creating-payments)
 	- [Payment Data](#3.1-payment-data)
-- [Processing Payments](#4-payment)
+- [Processing Payments](#4-processing-payments)
 	- [Fiat Payment](#4.1-fiat-payment)
 	- [Relayed Payment](#4.2-relayed-payment)
 - [Additional Info](#5-additional-info)
