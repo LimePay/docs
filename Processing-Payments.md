@@ -6,13 +6,13 @@
 - [Requirements](#1-requirements)
 - [Payments](#2-payments)
 - [Creating Payments](#3-creating-payments)
-	- [Payment Data](#3.1-payment-data)
+	- [Payment Data](#31-payment-data)
 - [Processing Payments](#4-processing-payments)
-	- [Fiat Payment](#4.1-fiat-payment)
-	- [Relayed Payment](#4.2-relayed-payment)
+	- [Fiat Payment](#41-fiat-payment)
+	- [Relayed Payment](#42-relayed-payment)
 - [Additional Info](#5-additional-info)
-	- [Wallet Configurations](#5.1-wallet-configurations)
-	- [Signing Transactions](#5.2-signing-transactions)
+	- [Wallet Configurations](#51-wallet-configurations)
+	- [Signing Transactions](#52-signing-transactions)
 
 This document contains detailed information on what the prerequisites of processing LimePay Payments are, how to create and process them. 
 
