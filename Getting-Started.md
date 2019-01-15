@@ -7,7 +7,7 @@
 - [Users](#2-user)
 - [API Credentials](#3-api-credentials)
 - [Vendor](#4-vendor)
-- [Shoppers](#5-shopper)
+- [Shoppers](#5-shoppers)
 - [Payments](#6-payments)
  
 In order to use LimePay service, one would need to contact LimePay's on-boarding team at TODO mail here.
