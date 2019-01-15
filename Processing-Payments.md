@@ -16,10 +16,10 @@
 
 This document contains detailed information on what the prerequisites of processing LimePay Payments are, how to create and process them. 
 
-If you are not familiar with types of payments, check the [Getting Started](https://github.com/LimePay/docs/blob/master/Getting-Started.md#6-payments) document. 
+If you are not familiar with types of payments, check the [Getting Started](https://github.com/LimePay/docs/blob/latest/Getting-Started.md#6-payments) document. 
 
 ### 1. Requirements
-The requirements for processing LimePay payments, no matter the type are described below with their corresponding:
+The requirements for processing LimePay payments, no matter the type, are described below:
  - Your Escrow contract must be deployed - *Performed by LimePay's on-boarding team, with information provide by the dApp owner.*
  - The Escrow contract must be funded with ethers and tokens (if applicable) - *Performed by the dApp owner.*
  - The Signers of the Escrow contract must be configured - *Performed by the dApp owner.*
@@ -30,7 +30,7 @@ The requirements for processing LimePay payments, no matter the type are describ
 
 Payments are created every time you want your users to execute Ethereum transactions using LimePay. There are two types of payments: `Fiat` and `Relayed`. Depending on the use-case you would want to process the one or the other.
 
-`Fiat` payments are used when your user has to be charged with credit/debit card, because he does not have ethers/tokens at all. In this case the user pays for the ethers and tokens that are required in order for him to execute the required Ethereum transactions, rendering the service that you are providing.
+`Fiat` payments are used when your user has to be charged with credit/debit card, because he does not have ethers/tokens at all. In this case the user pays with fiat funds for the ethers and tokens that are required in order for him to execute the required Ethereum transactions, rendering the service that you are providing.
 
 `Relayed` payments are used when your user has tokens for the services he wants to use, but does not have ether for the gas costs, therefore he cannot execute the transactions even though he has the tokens. In this scenario, you as a service provider decide to pay the gas costs of the user in order for him to be able to consume your service. Therefore the user is not charged with fiat funds.
 
@@ -38,7 +38,7 @@ Payments are created every time you want your users to execute Ethereum transact
 
 The creation of payments is done via the JavaScript SDK or using plain REST-API calls.
 
-More information on the JavaScript SDK can be found in the [JavaScript SDK]() documentation TODO. 
+More information on the JavaScript SDK can be found in the [JavaScript SDK](https://github.com/LimePay/docs/blob/latest/JavaScript-SDK-documentation.md) documentation TODO. 
 
 ```javascript
 const LimePay = require('limepay');
@@ -48,7 +48,7 @@ LimePay.connect({
 	secret: 'YOUR_API_SECRET_HERE'	
 }); // - returns promise
 
-...
+
 
 // Creating Fiat Payment
 LimePay.fiatPayment.create(fiatPaymentData, signerWalletConfig) // - returns promise
@@ -60,8 +60,7 @@ LimePay.relayedPayment.create(relayedPaymentData, signerWalletConfig) // - retur
 	.then(payment => { }) // the created payment is returned once resolved
 	.catch(error => { });
 ```
-
-`signerWalletConfig`  - object containing wallet information. TODO
+Additional information on `signerWalletConfig` can be found in the [Wallet Configuration](#5.1-wallet-configuration) section.
 
 #### 3.1 Payment Data
 Properties that you must provide when creating the different kinds of payments
@@ -104,12 +103,17 @@ const fiatPaymentData = {
 			gasLimit: 4700000,
 			to: "0x1835f2716ba8f3ede4180c88286b27f070efe985", // Your dApp contract address
 			functionName: "buySomeService",
-			functionParams: [] // Your specific parameters here
+			functionParams: [
+				{type: 'address', value: "0x1835f2716ba8f3ede4180c88286b27f070efe985"}
+			]
 		}
 	]
 }
 
 ```
+The example above will create a payment that, once processed will charge the shopper with $100, fund his address with  `10` tokens and  `0.01` ethers and execute the following transactions on his behalf:
+ 1. Execute `approve` transaction for the address of the dApp contract to spend `10` tokens
+ 2. Execute `buySomeService` transaction to the dApp's contract
 
 *Example for Relayed Payment Data:*
 ```javascript
@@ -134,15 +138,13 @@ const relayedPaymentData = {
 			gasLimit: 4700000,
 			to: "0x1835f2716ba8f3ede4180c88286b27f070efe985", // Your dApp contract address
 			functionName: "buySomeService",
-			functionParams: [] // Your specific parameters here
+			functionParams: [
+				{type: 'address', value: "0x1835f2716ba8f3ede4180c88286b27f070efe985"}
+			]
 		}
 	]
 }
 ```
-
-The following example will create a payment that, once processed will charge the shopper with $100, fund his address with  `10` tokens and  `0.01` ethers and execute the following transactions on his behalf:
- 1. Execute `approve` transaction for the address of the dApp contract to spend `10` tokens
- 2. Execute `buySomeService` transaction to the dApp's contract
 
 **NOTICE** The amount of wei specified in `weiAmount` must include the possible transaction fees for the `genericTransactions` as-well. If the value for `weiAmount` is not enough the `genericTransactions` will result in failure. 
 
@@ -154,8 +156,7 @@ Installing the UI library:
 
     npm install limepay-web
 	
-Once installed you need to create your configuration object:
-The config object must have the following structure:
+Once installed you need to create your configuration object. The config object must have the following structure:
 
 ```javascript
 const LimePayWeb = require('limepay-web');
@@ -172,7 +173,7 @@ const limePayConfig = {
 }
 ```
 
-The property `environment` sets the Environment of the LimePay API and the properties defined in `eventHandler` - `onSuccessfulSubmit` and `onFailedSubmit` are event handlers that are called once a payment has been submitted or fails.
+The property `environment` sets the Environment of the LimePay API and the properties defined in `eventHandler` - `onSuccessfulSubmit` and `onFailedSubmit` are event handlers that are called once a payment has been submitted successfully or fails.
 
 #### 4.1 Fiat Payments
 In order for your dApp to be able to process fiat payments, you need to integrate the following HTML form.
@@ -219,13 +220,14 @@ Must have requirements:
 **NOTE**: `processPayment()` is a function that you define and implement.
 
 #### **Three step processing of fiat payments**
-The following three steps must be perform so that you successfully process the fiat payment
+The following three steps must be performed so that you successfully process the fiat payment
 
  1. Initialise the fiat payment
  2. Sign the desired Ethereum transactions
  3. Process the payment
 
 **Step 1. Initialise the fiat payment** 
+
 Initialising the payment through the library: 
 ```javascript
 const LimePayWeb = require('limepay-web');
@@ -243,7 +245,7 @@ fiatPayment.buildSignedTransactions(walletConfiguration, transactions) // return
 		.catch(error => {});		
 ```
 
-Additional information on `walletConfiguration` and `transactions` can be found in the [Wallet Configuration](#5.1-wallet-configuration) and [Signing Transactions](#5.2-signing-transactions) sections. 
+Additional information on `walletConfiguration` and `transactions` can be found in the [Wallet Configurations](#5.1-wallet-configurations) and [Signing Transactions](#5.2-signing-transactions) sections. 
 
 **Step 3. Processing the Fiat Payment** 
 Once the user fills the required card data and submits the credit card data form you must process the payment:
@@ -263,17 +265,18 @@ function processPayment () {
 ```
 Once the payment is successfully sent for processing, an `onSuccessfulSubmit` event will be triggered. Respectively, if an error occurs, `onFailedSubmit` event will be triggered. 
 
-You can monitor the status of the payment through the `limepay` SDK. More information on how to `GET` payments in the [LimePay SDK]() TODO documentation.
+You can monitor the status of the payment through the `limepay` SDK. More information on how to `GET` payments in the [LimePay SDK](https://github.com/LimePay/docs/blob/latest/JavaScript-SDK-documentation.md) documentation.
 
 #### 4.2 Relayed Payments
 
 #### **Three step processing of relayed payments**
-The following three steps must be perform so that you successfully process relayed payment
+The following three steps must be performed so that you successfully process relayed payment
  1. Initialise the relayed payment
  2. Sign the desired Ethereum transactions
  3. Process the payment
 
-**Step 1. Initialise the relayed payment** 
+**Step 1. Initialise the relayed payment**
+
 Initialising the payment through the library: 
 ```javascript
 const LimePayWeb = require('limepay-web');
@@ -299,7 +302,7 @@ relayedPayment.processRelayedPayment(); // triggers the processing of the paymen
 ```
 Once the payment is successfully sent for processing, an  `onSuccessfulSubmit`  event will be triggered. Respectively, if an error occurs,  `onFailedSubmit`  event will be triggered.
 
-You can monitor the status of the payment through the  `limepay`  SDK. More information on how to  `GET`  payments in the  [LimePay SDK](https://stackedit.io/app)  TODO documentation.
+You can monitor the status of the payment through the `limepay` SDK. More information on how to `GET` payments in the [LimePay SDK](https://github.com/LimePay/docs/blob/latest/JavaScript-SDK-documentation.md) documentation.
 
 ### 5. Additional Info
 #### 5.1 Wallet Configuration
@@ -333,7 +336,7 @@ const mnemonicWalletConfig = {
 
 #### 5.2 Signing Transactions
 
-In order for you to process payments you need to provide the initialised payment with the signed (by the shopper's private key) Ethereum transactions. For the sake of convenience, `limepay-web` supports signing Ethereum transactions  and directly providing them to the payment.
+In order for you to process payments you need to provide the initialised payment with the signed (by the shopper's private key) Ethereum transactions. For the sake of convenience, `limepay-web` supports signing Ethereum transactions  and directly sets them to the payment instance.
 
 *Example:*
 ```javascript
