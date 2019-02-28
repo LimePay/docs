@@ -3,26 +3,16 @@ Errors Documentation
 
 ## Content
 
-- [Error Code Legend](#1-error-code-legend)
-- [Authorization Errors](#2-authorization-errors)
-- [Blockchain Errors](#3-blockchain-errors)
-- [Not Found Errors](#4-not-found-errors)
-- [Validation Errors](#5-validation-errors)
-- [Global Errors](#6-global-errors)
-- [Payment Errors](#7-payment-errors)
-- [Shopper Errors](#8-shopper-errors)
-
-### 1. Error Code Legend
-
-Each error code follows a specific format
-
-- First Digit: Group of error
-- Second Digit: Sub group of error
-- Third Digit: If the error is due to **request parameters** the digit should be 1, if it is due to configuration the digit should be 0
-- Fourth Digit: Sequent error number
+- [Authorization Errors](#1-authorization-errors)
+- [Blockchain Errors](#2-blockchain-errors)
+- [Not Found Errors](#3-not-found-errors)
+- [Validation Errors](#4-validation-errors)
+- [Global Errors](#5-global-errors)
+- [Payment Errors](#6-payment-errors)
+- [Shopper Errors](#7-shopper-errors)
 
 
-### 2. Authorization Errors
+### 1. Authorization Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -30,7 +20,7 @@ Each error code follows a specific format
 | `AUTHORIZATION_ERROR` | `1012` | Invalid token provided | You will get this error if the token provided is invalid | Accessing resources which require token authorization |
 | `AUTHORIZATION_ERROR` | `1111` | Unauthorized request | You will get this error if your non-token authorization fails | Accessing resources which require non-token authorization |
 
-### 3. Blockchain Errors
+### 2. Blockchain Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |----------- | ----------- | ---------- |
@@ -48,7 +38,7 @@ Each error code follows a specific format
 | `BLOCKCHAIN_ERROR` | `2211` | Invalid signer. The Authorization signature is not signed by signer's wallet | You will get this error if the provided authrorization signature for the funding of the shopper is not signed by a `signer` of the Escrow contract that is deployed for you organization | Creating payment |
 | `BLOCKCHAIN_ERROR` | `2212` | {authorizationSignature} is not a valid authorization signature | You will get this error if the provided authrorization signature for the funding of the shopper does not have the correct format | Creating payment |
     
-### 4. Not Found Errors
+### 3. Not Found Errors
     
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -61,7 +51,7 @@ Each error code follows a specific format
 | `NOT_FOUND_ERROR` | `3018` | The record you have searched for does not exists | You will get this error if your searching criteria is invalid | Every time we cannot parse searching criteria |
 
 
-### 5. Validation Errors
+### 4. Validation Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -77,7 +67,7 @@ Each error code follows a specific format
 | `VALIDATION_ERROR` | `4212` | [{some property}] should be Number | You will get this error if you have provided reduced vat rate that was not number | Calculating the VAT for a fiat payment/processing payment with a reduced vat rate |
 | `VALIDATION_ERROR` | `4501` | API user credentials limit has been exceeded, limit is 3 | You will get this error if you try to create more than 3 API Credentials | Creating API Credentials |
 
-### 6. Global Errors
+### 5. Global Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -86,7 +76,7 @@ Each error code follows a specific format
 | `REQUESTS_RATE_LIMIT_ERROR` | `5211` | Too many requests, please try again later. | You will get this error if you exceed LimePay API rate limit | Every time rate limit is exceeded |
 
 
-### 7. Payment Errors
+### 6. Payment Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -100,7 +90,7 @@ Each error code follows a specific format
 | May Vary | `6401` | **{payment transaction error}** | You will get this error if LimePay's Payment Provider cannot process the payment for some reason. Possible Values for Error name are: `INVALID_AMOUNT`, `PAYMENT_GENERAL_FAILURE`, `VALIDATION_GENERAL_FAILURE`, `XSS_EXCEPTION`, `THREE_D_SECURITY_AUTHENTICATION_REQUIRED`, `AUTHORIZATION_AMOUNT_NOT_VALID`, `CVV_ERROR`, `EXPIRED_CARD`, `HIGH_RISK_ERROR`, `INCORRECT_INFORMATION`, `INSUFFICIENT_FUNDS`, `INVALID_CARD_NUMBER`, `INVALID_CARD_TYPE`, `LIMIT_EXCEEDED`, `RESTRICTED_CARD`, `THREE_D_SECURE_FAILURE` | Processing Fiat payment |
 
 
-### 8. Shopper Errors
+### 7. Shopper Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
