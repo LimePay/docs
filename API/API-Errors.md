@@ -1,4 +1,4 @@
-Errors Documentation
+API Errors Documentation
 ============
 
 ## Content
