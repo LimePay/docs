@@ -1,28 +1,18 @@
-Errors Documentation
+API Errors Documentation
 ============
 
 ## Content
 
-- [Error Code Legend](#1-error-code-legend)
-- [Authorization Errors](#2-authorization-errors)
-- [Blockchain Errors](#3-blockchain-errors)
-- [Not Found Errors](#4-not-found-errors)
-- [Validation Errors](#5-validation-errors)
-- [Global Errors](#6-global-errors)
-- [Payment Errors](#7-payment-errors)
-- [Shopper Errors](#8-shopper-errors)
-
-### 1. Error Code Legend
-
-Each error code follows a specific format
-
-- First Digit: Group of error
-- Second Digit: Sub group of error
-- Third Digit: If the error is due to **request parameters** the digit should be 1, if it is due to configuration the digit should be 0
-- Fourth Digit: Sequent error number
+- [Authorization Errors](#1-authorization-errors)
+- [Blockchain Errors](#2-blockchain-errors)
+- [Not Found Errors](#3-not-found-errors)
+- [Validation Errors](#4-validation-errors)
+- [Global Errors](#5-global-errors)
+- [Payment Errors](#6-payment-errors)
+- [Shopper Errors](#7-shopper-errors)
 
 
-### 2. Authorization Errors
+### 1. Authorization Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -30,7 +20,7 @@ Each error code follows a specific format
 | `AUTHORIZATION_ERROR` | `1012` | Invalid token provided | You will get this error if the token provided is invalid | Accessing resources which require token authorization |
 | `AUTHORIZATION_ERROR` | `1111` | Unauthorized request | You will get this error if your non-token authorization fails | Accessing resources which require non-token authorization |
 
-### 3. Blockchain Errors
+### 2. Blockchain Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |----------- | ----------- | ---------- |
@@ -45,8 +35,10 @@ Each error code follows a specific format
 | `BLOCKCHAIN_ERROR` | `2117` | Invalid number of signed transactions | The number of signed transactions must be the same as the number of generic transactions provided on payment creation | Processing payment |
 | `BLOCKCHAIN_ERROR` | `2118` | Invalid signer. The transactions were not signed by the Shopper's private key | The signer of the transactions (his public address) should be equal to the shopper's `walletAddress` | Processing payment |
 | `BLOCKCHAIN_ERROR` | `2119` | Cannot decode generic transaction data! | You will get this error if a provided signed transaction is not valid or the parameter types provided on payment creation are not valid | Processing payment |
+| `BLOCKCHAIN_ERROR` | `2211` | Invalid signer. The Authorization signature is not signed by signer's wallet | You will get this error if the provided authorization signature for the funding of the shopper is not signed by a `signer` of the Escrow contract that is deployed for you organization | Creating payment |
+| `BLOCKCHAIN_ERROR` | `2212` | {authorizationSignature} is not a valid authorization signature | You will get this error if the provided authorization signature for the funding of the shopper does not have the correct format | Creating payment |
     
-### 4. Not Found Errors
+### 3. Not Found Errors
     
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -59,7 +51,7 @@ Each error code follows a specific format
 | `NOT_FOUND_ERROR` | `3018` | The record you have searched for does not exists | You will get this error if your searching criteria is invalid | Every time we cannot parse searching criteria |
 
 
-### 5. Validation Errors
+### 4. Validation Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -71,8 +63,11 @@ Each error code follows a specific format
 | `VALIDATION_ERROR` | `4311` | WeiAmount must have non-zero value | You will get this error if your `fundTx.weiAmount` is zero | Creating payment |
 | `VALIDATION_ERROR` | `4411` | Vat number **{vat number here}** is invalid | You will get this error if you pass invalid VAT number in CardHolderInformation | Creating vendor / Processing Fiat payment | 
 | `VALIDATION_ERROR` | `4412` | Vat number is empty | You will get this error if you have vat number as property in CardHolderInformation, but it does not have a value | Creating vendor / Processing Fiat payment |
+| `VALIDATION_ERROR` | `4413` | {vat rate} is not a valid VAR rate for your country | You will get this error if you have provided an invalid REDUCED vat rate | Calculating the VAT for a fiat payment/processing payment with a reduced vat rate |
+| `VALIDATION_ERROR` | `4212` | [{some property}] should be Number | You will get this error if you have provided reduced vat rate that was not number | Calculating the VAT for a fiat payment/processing payment with a reduced vat rate |
+| `VALIDATION_ERROR` | `4501` | API user credentials limit has been exceeded, limit is 3 | You will get this error if you try to create more than 3 API Credentials | Creating API Credentials |
 
-### 6. Global Errors
+### 5. Global Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
@@ -81,10 +76,11 @@ Each error code follows a specific format
 | `REQUESTS_RATE_LIMIT_ERROR` | `5211` | Too many requests, please try again later. | You will get this error if you exceed LimePay API rate limit | Every time rate limit is exceeded |
 
 
-### 7. Payment Errors
+### 6. Payment Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
+| `PAYMENT_ERROR` | `6001` | Signature metadata for Payment cannot be retrieved | If your escrow contract is version 1 (by default all of them are version 2), you will get this error when you execute `get signature metadata` | Getting signature metadata for payment |
 | `PAYMENT_ERROR` | `6011` | Payment has already been processed  | You are allowed to create a payment and process it, but not re-process it | Processing payment |
 | `PAYMENT_ERROR` | `6012` | Payment can't be processed, because shopper is malicious |  You will get this error if a shopper is flagged as malicious one. You need to contact support once this error occurs | Processing payment |
 | `PAYMENT_ERROR` | `6111` | Payment can't be created, while another one is in processing state | You will get this error if you try to create new payment for a shopper, while another one is in processing state | Creating payment |
@@ -94,8 +90,13 @@ Each error code follows a specific format
 | May Vary | `6401` | **{payment transaction error}** | You will get this error if LimePay's Payment Provider cannot process the payment for some reason. Possible Values for Error name are: `INVALID_AMOUNT`, `PAYMENT_GENERAL_FAILURE`, `VALIDATION_GENERAL_FAILURE`, `XSS_EXCEPTION`, `THREE_D_SECURITY_AUTHENTICATION_REQUIRED`, `AUTHORIZATION_AMOUNT_NOT_VALID`, `CVV_ERROR`, `EXPIRED_CARD`, `HIGH_RISK_ERROR`, `INCORRECT_INFORMATION`, `INSUFFICIENT_FUNDS`, `INVALID_CARD_NUMBER`, `INVALID_CARD_TYPE`, `LIMIT_EXCEEDED`, `RESTRICTED_CARD`, `THREE_D_SECURE_FAILURE` | Processing Fiat payment |
 
 
-### 8. Shopper Errors
+### 7. Shopper Errors
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
 | `SHOPPER_ERROR` | `10011` | Shopper is invalid | You will get this error if you try to create a payment for invalid shopper | Creating payment |
+| `SHOPPER_ERROR` | `10021` | Cannot update the wallet of a Shopper that is using LimePay powered Wallet | You will get this error if you try to update a Shopper's `walletAddress` but the shopper uses LimePay powered wallet | Updating Shopper |
+| `SHOPPER_ERROR` | `10031` | Cannot get Encrypted wallet for Shopper that is not using LimePay powered wallet | You will get this error if you try to get/save/change the Encrypted Wallet of a Shopper that do not use LimePay powered wallets | GET/CREATE/Change the encrypted Wallet of a shopper |
+| `SHOPPER_ERROR` | `10041` | No Wallet is saved for the requested shopper. Create the wallet first | You will get this error if you try to create a payment, get or change the encrypted wallet of a Shopper that does not have LimePay powered wallet yet | Create Payment, GET Encrypted Wallet, Change the password of a Encrypted wallet |
+| `SHOPPER_ERROR` | `10051` | Shopper already has LimePay powered wallet | When you try to create Encrypted Wallet for a Shopper that already has one | Create Encrypted Wallet for a Shopper |
+| `SHOPPER_ERROR` | `10061` | Invalid mnemonic was provided | When you want to change the password of a Encrypted Wallet for a Shopper and you provide wrong mnemonic  | Change the password of a encrypted wallet |

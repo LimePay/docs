@@ -19,6 +19,7 @@ API Documentation
   - [Vendor Principal](#vendor-principal)
   - [Email Setup](#email-setup)
   - [Shopper](#shopper)
+  - [Wallet Token](#wallet-token)
   - [Payment](#payment)
   - [Item](#item)
   - [Payment Details](#payment-details)
@@ -76,41 +77,7 @@ The source is located at `/v1/vendors` and it is restricted resource. One could 
 
 The authorization is made by adding `Basic Authorization` header and setting `apiKey` and `secret` as username and password. 
 
-#### 2.1 Creating Vendor
-##### ***Notice**: The Creation of Vendors is **NOT** accessible for now. Once we make it accessible, we will update the documentation.* 
-In order to create Vendor one should execute the following request:
-
-    POST /v1/vendors
-
-Body data:
-
-| Field                    | Type     | Description                                                                        | Required |
-| ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
-| `name`                   | `string` | Vendor name                                                                        | yes      |
-| `address`                | `string` | Vendor street address                                                              | yes      |
-| `zip`                    | `string` | Zip/Postal code of vendor bank                                                     | yes      |
-| `city`                   | `string` | Vendor city                                                                        | yes      |
-| `country`                | `string` | Country code                                                                       | yes      |
-| `phone`                  | `string` | Vendor's phone                                                                     | yes      |
-| `email`                  | `string` | Vendor email                                                                       | yes      |
-| `vatId`                  | `string` | The company’s VAT number                                                           | no, can be undefined if `taxId` is set |
-| `taxId`                  | `string` | The company’s business ID number                                                   | no, can be undefined if `vatId` is set |
-| `payoutInfo`             | `array`  | Array of [Payout Info](#payout-info) objects                                       | yes      |
-| `vendorPrincipal`        | `object` | [Vendor Principal](#vendor-principal) object                                       | yes      |
-| `emailSetup`             | `object` | [Email Setup](#email-setup) object                                                 | yes      |
-| `defaultPayoutCurrency`  | `string` | Currency code (ISO 4217) for the default payout currency                           | yes      |
-| `state`                  | `string` | Vendor state                                                                       | no, if country is not `US` or `CA` |
-| `receiptEmail`           | `string` | The email from which the receipts and invoices will be sent                        | yes      |
-| `autoReceipt`            | `boolean`| If set to true, receipts will be sent automatically to the shoppers                | no       |
-| `autoInvoice`            | `boolean`| If set to true, invoices will be sent automatically to the shoppers                | no       |
-| `frequency`              | `string` | The payout frequency of the vendor. Possible values are: `DAILY`, `WEEKLY`, `SEMIMONTHLY` and `MONTHLY` | no   |
-| `rawLogo`            	   | `string` | Logo used in invoices. Pure base64 format               						   | no       |
-| `firstName`              | `string` | First name of Vendor (if individual vendor, not business)                          | no       |
-| `lastName`               | `string` | First name of Vendor (if individual vendor, not business)                          | no       |
-
-Returns object of type [Vendor](#vendor) 
-
-#### 2.2 Getting Vendor
+#### 2.1 Getting Vendor
 
 In order to get Vendor one should execute the following request:
 
@@ -118,45 +85,13 @@ In order to get Vendor one should execute the following request:
     
 Returns object of type [Vendor](#vendor) 
 
-#### 2.3 Getting All Vendors
+#### 2.2 Getting All Vendors
 
 In order to get all Vendors one should execute the following request:
 
     GET /v1/vendors
 
 Returns array of [Vendor](#vendor) objects
-
-#### 2.4 Update Vendor
-##### ***Notice**: The Update of Vendor is **NOT** accessible for now. Once we make it accessible, we will update the documentation.* 
-In order to update Vendor's properties one should execute the following request:
-
-    PATCH /v1/vendors/:id
-
-Body data:
-
-| Field                    | Type     | Description                                                                        | Required |
-| ------------------------ | -------- | ---------------------------------------------------------------------------------- | -------- |
-| `name`                   | `string` | Vendor name                                                                        | no       |
-| `address`                | `string` | Vendor street address                                                              | no       |
-| `zip`                    | `string` | Zip/Postal code of vendor bank                                                     | no       |
-| `city`                   | `string` | Vendor city                                                                        | no       |
-| `country`                | `string` | Country code                                                                       | no       |
-| `phone`                  | `string` | Vendor's phone                                                                     | no       |
-| `email`                  | `string` | Vendor email                                                                       | no       |
-| `payoutInfo`             | `array`  | Array of [Payout Info](#payout-info) objects                                       | no       |
-| `vendorPrincipal`        | `object` | [Vendor Principal](#vendor-principal) object                                       | no       |
-| `emailSetup`             | `object` | [Email Setup](#email-setup) object                                                 | no       |
-| `defaultPayoutCurrency`  | `string` | Currency code (ISO 4217) for the default payout currency                           | no       |
-| `state`                  | `string` | Vendor state                                                                       | no   	  |
-| `receiptEmail`           | `string` | The email from which the receipts and invoices will be sent                        | no       |
-| `autoReceipt`            | `boolean`| If set to true, receipts will be sent automatically to the shoppers                | no       |
-| `autoInvoice`            | `boolean`| If set to true, invoices will be sent automatically to the shoppers                | no       |
-| `frequency`              | `string` | The payout frequency of the vendor. Possible values are: `DAILY`, `WEEKLY`, `SEMIMONTHLY` and `MONTHLY` | no   |
-| `rawLogo`            	   | `string` | Logo used in invoices. Pure base64 format               						   | no       |
-| `firstName`              | `string` | First name of Vendor (if individual vendor, not business)                          | no       |
-| `lastName`               | `string` | First name of Vendor (if individual vendor, not business)                          | no       |
-
-Returns object of type [Vendor](#vendor) 
 ___
 
 ### 3. Shoppers
@@ -179,7 +114,8 @@ Body data:
 | `lastName`               | `string` | Last name of shopper                                                               | yes      |
 | `email`                  | `string` | Shopper email                                                                      | yes      |
 | `vendor`                 | `string` | The ID of the Vendor.                                                              | yes      |
-| `walletAddress`          | `string` | Shopper's wallet address                                                           | yes      |
+| `walletAddress`          | `string` | Shopper's wallet address                                                           | required only if `useLimePayWallet` is `true` |
+| `useLimePayWallet`          | `boolean` | Indicates whether the shopper will use LimePay internal encrypted wallets. Default is `false`      | no      |
 
 Returns object of type [Shopper](#shopper) 
 
@@ -198,7 +134,6 @@ In order to get all Shoppers one should execute the following request:
     GET /v1/shoppers
 
 Returns array of [Shopper](#shopper) objects 
-
 
 #### 3.4 Update Shopper
 In order to update Shopper's properties one should execute the following request:
@@ -223,19 +158,14 @@ In order to delete Shopper one should execute the following request:
 
 If the deletion was successful, HTTP `status` code `200` will be returned 
 
-#### 3.6 Resetting Shopper's malicious attempts
+#### 3.6 Getting Wallet Token
+The wallet token can be issued only for a shopper that has `useLimePayWallet` set to `true`
+In order to get Wallet Token one should execute the following request:
 
-In order to reset the malicious attempts of a Shopper one should execute the following request:
+    GET /v1/shoppers/:id/walletToken
 
-    POST /v1/shoppers/reset
+Returns object of type [Wallet Token](#wallet-token) 
 
-Body data:
-
-| Field                | Type     |Description                                                                      | Required   |
-| -------------------- | -------- | ------------------------------------------------------------------------------- | ---------- |
-| `shopperId`          | `string` | The ID of the shopper for which it will reset the malicious attempts            | yes        |
-
-Returns object of type [Shopper](#shopper) 
 ___
 
 ### 4. Payments
@@ -476,6 +406,12 @@ Possible values for `payoutType`:
 | `email`                  | `string` | Shopper email                                                                      | no       |
 | `walletAddress`          | `string` | Shopper wallet address                                                             | no       |
 | `maliciousAttempts`      | `integer`| The number of malicious attemps for a shopper. It is incremented when a given signed transaction reverts. | no |
+| `useLimePayWallet`      | `boolean`| Indicates whether the shopper will use LimePay internal encrypted wallets.           | no |
+
+### Wallet Token
+| Attribute                | Type     | Description                                                                                    | Nullable |
+| ------------------------ | -------- | ---------------------------------------------------------------------------------------------- | -------- |
+| `walletToken`            | `string` | The generated JSON Web Token for the generation of LimePay encrypted Wallet later on           | no       |
 
 ### Payment
 
@@ -492,6 +428,7 @@ Possible values for `payoutType`:
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | no       |
 | `paymentDetails`     | `object` | [Payment Details](#payemnt-details) object  									| no       |
 | `type`               | `string` | The type of the payment. Possible values `FIAT_PAYMENT`, `RELAYED_PAYMENT`   	| no       |
+| `limeToken`          | `string` | The generated JSON Web Token for the payment                                    | yes       | 
 
 ### Payment statuses
 

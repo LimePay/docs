@@ -13,6 +13,7 @@ JavaScript SDK Documentation
 	- [Creating Shopper](#23-creating-shopper)
 	- [Updating Shopper](#24-updating-shopper)
 	- [Deleting Shopper](#25-deleting-shopper)
+	- [Getting Wallet Token](#26-getting-wallet-token-for-shopper)
 - [Payments](#3-payments)
 	- [Getting Payment](#31-getting-payment)
 	- [Getting All Payments](#32-getting-all-payments)
@@ -112,11 +113,19 @@ Returns object of type [Shopper](https://github.com/LimePay/docs/blob/latest/4.%
 ### 2.5 Deleting Shopper
 
 ```javascript
-LimePay.shoppers.delete('shopperId') // returns promise
-	.then(shopper => {})
+LimePay.shoppers.delete('shopperId') // returns new Promise<>
 	.catch(error => {});
 ```
-Returns response `code 200` once successfully deleting the shopper.
+
+### 2.6 Getting Wallet Token for Shopper
+
+```javascript
+LimePay.shoppers.getWalletToken('shopperId') // returns new Promise<>
+	.then(result => {})
+	.catch(error => {});
+```
+
+Returns object of type [Wallet Token](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#wallet-token)
 
 ## 3. Payments
 Through the SDK you can consume the Payments resource.
