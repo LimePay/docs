@@ -5,7 +5,7 @@ Web-Library Errors Documentation
 
 - [Validation](#1-validation)
 - [Token Verification](#2-token-verification)
-- [Transactions](#3-transacitons)
+- [Transactions](#3-transactions)
 - [Wallets](#4-wallets)
 
 ### 1. Validation
@@ -40,4 +40,4 @@ Web-Library Errors Documentation
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
 | `WALLET_ERROR` | `8003` | No mnemonic provided | When you don't provide a mnemonic when you are changing the password of a encrypted wallet   | Changing password of the Wallet for a Shopper |
-| `WALLET_ERROR` | `8004` | No password provided | When you dont't provide new password when you are changing the password of a encrypted wallet   | Changing password of the Wallet for a Shopper |
+| `WALLET_ERROR` | `8004` | No password provided | When you don't provide new password when you are changing the password of a encrypted wallet   | Changing password of the Wallet for a Shopper |

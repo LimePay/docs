@@ -35,8 +35,8 @@ API Errors Documentation
 | `BLOCKCHAIN_ERROR` | `2117` | Invalid number of signed transactions | The number of signed transactions must be the same as the number of generic transactions provided on payment creation | Processing payment |
 | `BLOCKCHAIN_ERROR` | `2118` | Invalid signer. The transactions were not signed by the Shopper's private key | The signer of the transactions (his public address) should be equal to the shopper's `walletAddress` | Processing payment |
 | `BLOCKCHAIN_ERROR` | `2119` | Cannot decode generic transaction data! | You will get this error if a provided signed transaction is not valid or the parameter types provided on payment creation are not valid | Processing payment |
-| `BLOCKCHAIN_ERROR` | `2211` | Invalid signer. The Authorization signature is not signed by signer's wallet | You will get this error if the provided authrorization signature for the funding of the shopper is not signed by a `signer` of the Escrow contract that is deployed for you organization | Creating payment |
-| `BLOCKCHAIN_ERROR` | `2212` | {authorizationSignature} is not a valid authorization signature | You will get this error if the provided authrorization signature for the funding of the shopper does not have the correct format | Creating payment |
+| `BLOCKCHAIN_ERROR` | `2211` | Invalid signer. The Authorization signature is not signed by signer's wallet | You will get this error if the provided authorization signature for the funding of the shopper is not signed by a `signer` of the Escrow contract that is deployed for you organization | Creating payment |
+| `BLOCKCHAIN_ERROR` | `2212` | {authorizationSignature} is not a valid authorization signature | You will get this error if the provided authorization signature for the funding of the shopper does not have the correct format | Creating payment |
     
 ### 3. Not Found Errors
     
@@ -80,7 +80,7 @@ API Errors Documentation
 
 | Error Name            | Code  | Message    | Description | Оccurrence |
 | --------------------- | ----- |--------------- | -------- | -------- |
-| `PAYMENT_ERROR` | `6001` | Signature metadata for Payment cannot be retrived | If your escrow contract is version 1 (by default all of them are version 2), you will get this error when you execute `get signature metadata` | Getting signature metadata for payment |
+| `PAYMENT_ERROR` | `6001` | Signature metadata for Payment cannot be retrieved | If your escrow contract is version 1 (by default all of them are version 2), you will get this error when you execute `get signature metadata` | Getting signature metadata for payment |
 | `PAYMENT_ERROR` | `6011` | Payment has already been processed  | You are allowed to create a payment and process it, but not re-process it | Processing payment |
 | `PAYMENT_ERROR` | `6012` | Payment can't be processed, because shopper is malicious |  You will get this error if a shopper is flagged as malicious one. You need to contact support once this error occurs | Processing payment |
 | `PAYMENT_ERROR` | `6111` | Payment can't be created, while another one is in processing state | You will get this error if you try to create new payment for a shopper, while another one is in processing state | Creating payment |
@@ -96,7 +96,7 @@ API Errors Documentation
 | --------------------- | ----- |--------------- | -------- | -------- |
 | `SHOPPER_ERROR` | `10011` | Shopper is invalid | You will get this error if you try to create a payment for invalid shopper | Creating payment |
 | `SHOPPER_ERROR` | `10021` | Cannot update the wallet of a Shopper that is using LimePay powered Wallet | You will get this error if you try to update a Shopper's `walletAddress` but the shopper uses LimePay powered wallet | Updating Shopper |
-| `SHOPPER_ERROR` | `10031` | Cannot get Encrypted wallet for Shopper that is not using LimePay powered wallet | You will get this error if you try to get/save/change the Encrypted Wallet of a Shopper that do not use LimePay powered wallets | GET/CREATE/Chnage the encrypted Wallet of a shopper |
+| `SHOPPER_ERROR` | `10031` | Cannot get Encrypted wallet for Shopper that is not using LimePay powered wallet | You will get this error if you try to get/save/change the Encrypted Wallet of a Shopper that do not use LimePay powered wallets | GET/CREATE/Change the encrypted Wallet of a shopper |
 | `SHOPPER_ERROR` | `10041` | No Wallet is saved for the requested shopper. Create the wallet first | You will get this error if you try to create a payment, get or change the encrypted wallet of a Shopper that does not have LimePay powered wallet yet | Create Payment, GET Encrypted Wallet, Change the password of a Encrypted wallet |
 | `SHOPPER_ERROR` | `10051` | Shopper already has LimePay powered wallet | When you try to create Encrypted Wallet for a Shopper that already has one | Create Encrypted Wallet for a Shopper |
 | `SHOPPER_ERROR` | `10061` | Invalid mnemonic was provided | When you want to change the password of a Encrypted Wallet for a Shopper and you provide wrong mnemonic  | Change the password of a encrypted wallet |
