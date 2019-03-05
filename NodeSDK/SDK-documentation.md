@@ -88,7 +88,8 @@ Where `shopperData` is object with the following properties:
 | `lastName`      | `string` | Shopper's last name  	  | no	   |
 | `vendor`		  | `string` | Vendor ID for which the shopper will be created. If not provided, the default organisation's vendor will be used| no|
 | `email`		  | `string` | Shopper's email 			  | yes    |
-| `walletAddress` | `string` | Shopper's wallet address   | yes    |
+| `useLimePayWallet` | `boolean` | Whether the shopper will use LimePay Wallets or not. Default value is `false`  | no |
+| `walletAddress` | `string` | Shopper's wallet address   | yes, if `useLimePayWallet` is `false` |
 
 Returns object of type [Shopper](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#shopper).
 
