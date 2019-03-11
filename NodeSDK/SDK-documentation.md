@@ -91,7 +91,7 @@ Where `shopperData` is object with the following properties:
 | `useLimePayWallet` | `boolean` | Whether the shopper will use LimePay Wallets or not. Default value is `false`  | no |
 | `walletAddress` | `string` | Shopper's wallet address   | yes, if `useLimePayWallet` is `false` |
 
-Returns object of type [Shopper](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#shopper).
+Returns object of type [Shopper](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#shopper).
 
 ### 2.4 Updating Shopper
 
@@ -109,7 +109,7 @@ Where `shopperData` is object with the following properties:
 | `email`		  | `string` | Shopper's email 			  | no	   |
 | `walletAddress` | `string` | Shopper's wallet address   | no 	   |
 
-Returns object of type [Shopper](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#shopper).
+Returns object of type [Shopper](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#shopper).
 
 ### 2.5 Deleting Shopper
 
@@ -126,7 +126,7 @@ LimePay.shoppers.getWalletToken('shopperId') // returns new Promise<>
 	.catch(error => {});
 ```
 
-Returns object of type [Wallet Token](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#wallet-token)
+Returns object of type [Wallet Token](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#wallet-token)
 
 ## 3. Payments
 Through the SDK you can consume the Payments resource.
@@ -138,7 +138,7 @@ LimePay.payments.get('paymentId') // returns promise
 	.catch(error => {});
 ```
 
-Returns object of type [Payment](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#payment).
+Returns object of type [Payment](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#payment).
 
 ### 3.2 Getting All Payments
 ```javascript
@@ -146,7 +146,7 @@ LimePay.payments.getAll() // returns promise
 	.then(payments => {})
 	.catch(error => {});
 ```
-Returns array of [Payment](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#payment). objects.
+Returns array of [Payment](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#payment). objects.
 
 ## 4. Fiat Payments
 
@@ -160,11 +160,11 @@ LimePay.fiatPayment.create(fiatPaymentData, signerWalletConfig) // returns promi
 	.catch(error => {});
 ```
 
-Once executed successfully returns object of type [Payment](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#payment).
+Once executed successfully returns object of type [Payment](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#payment).
 
 ---
 `signerWalletConfig` is the wallet configuration of a wallet that is marked as `signer` in the Escrow contract.
-You can find more information of the properties of the `signerWalletConfig` [here](https://github.com/LimePay/docs/blob/latest/2.%20Processing-Payments.md#51-wallet-configurations).
+You can find more information of the different kinds of wallet configurations [here](#wallet-configurations).
 
 `fiatPaymentData` is object with the following properties:
 
@@ -221,7 +221,7 @@ Once executed successfully returns object of type [Payment](https://github.com/L
 
 ---
 `signerWalletConfig` is the wallet configuration of a wallet that is marked as `signer` in the Escrow contract.
-You can find more information of the properties of the `signerWalletConfig` [here](https://github.com/LimePay/docs/blob/latest/2.%20Processing-Payments.md#51-wallet-configurations).
+You can find more information of the different kinds of wallet configurations [here](#wallet-configurations).
 
 `relayedPaymentData` is object with the following properties:
 
@@ -234,6 +234,32 @@ You can find more information of the properties of the `signerWalletConfig` [her
 ---
 
 ### 6. Objects
+
+#### Wallet Configurations
+
+Below are some examples of the different wallet configurations.
+
+```javascript
+const encryptedWalletConfig = {
+	encryptedWallet: {
+		jsonWallet: wallet, // JSON encrypted Wallet
+		password: password
+	}
+}  
+const decryptedWalletConfig = {
+	decryptedWallet: wallet  // Ethers decrypted wallet 
+} 
+const privateKeyWalletConfig = {
+	privateKey: 'private key here'
+}
+
+const mnemonicWalletConfig = {
+	mnemonic: {
+		mnemonic:  'saddle must leg organ divide fiction cupboard nothing useless flower polar arrive',
+		nonEnglishLocaleWorldList:  null
+	}
+}
+```
 
 #### Item
 
