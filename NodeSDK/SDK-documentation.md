@@ -25,6 +25,7 @@ JavaScript SDK Documentation
 - [Relayed Payments](#5-relayed-payments)
 	- [Creating Relayed Payment](#51-creating-relayed-payment)
 - [Objects](#6-objects)
+	- [Wallet Configurations](#wallet-configurations)
 	- [Item](#item)
 	- [Fund Transaction Data For Fiat Payment](#fund-transaction-data-for-fiat-payment)
 	- [Fund Transaction Data For Relayed Payment](#fund-transaction-data-for-relayed-payment)
