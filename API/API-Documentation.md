@@ -426,7 +426,7 @@ Possible values for `payoutType`:
 | `items`              | `array`  | Array of [Items](#item) objects that are being purchased         				| no       |
 | `fundTxData`         | `object` | Object containing information about the funding of an shopper                   | no       |
 | `genericTransactions`| `array`  | Objects containing information about every transaction that should be executed  | no       |
-| `paymentDetails`     | `object` | [Payment Details](#payemnt-details) object  									| no       |
+| `paymentDetails`     | `object` | [Payment Details](#payment-details) object  									| no       |
 | `type`               | `string` | The type of the payment. Possible values `FIAT_PAYMENT`, `RELAYED_PAYMENT`   	| no       |
 | `limeToken`          | `string` | The generated JSON Web Token for the payment                                    | yes       | 
 
