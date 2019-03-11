@@ -26,6 +26,7 @@ API Documentation
   - [Card Holder](#card-holder)
   - [Fund TX Data](#fund-transaction-data)
   - [Generic Transaction](#generic-transaction)
+  - [Function parameter](#function-parameter)
   
 ## Resources
 ___
@@ -495,7 +496,7 @@ Possible values for `payoutType`:
 | `signedTransaction`  | `string` | Signed transaction by the shoppers private key, that will be broadcasted                            | no       |
 | `status`             | `string `| Status of the transaction. Possible values are: `PENDING`, `PROCESSING`, `SUCCESSFUL`, `FAILED`     | no       |
 | `transactionHash`    | `string` | The hash of the transaction. It will be set once the transaction is broadcasted                     | yes      |
-| `functionParams`     | `array`  | Array of [Function parameter](#function-parameter]) objects. Each object contain information(type,value) of parameter that should be passed to a function   | no |
+| `functionParams`     | `array`  | Array of [Function parameter](#function-parameter) objects. Each object contain information(type,value) of parameter that should be passed to a function   | no |
 
 ### Function parameter
 
