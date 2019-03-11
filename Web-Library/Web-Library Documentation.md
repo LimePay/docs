@@ -49,7 +49,7 @@ LimePay.Wallet.get(walletToken) // returns Promise<>
 	.catch(error => {});
 ```
 
-Where `walletToken` is the token returned after performing [Get Wallet Token](https://github.com/LimePay/docs/blob/add-library-documentation/3.%20JS-SDK-documentation.md#26-getting-wallet-token-for-shopper) request through the SDK or a [direct call](https://github.com/LimePay/docs/blob/add-library-documentation/5.%20API-Documentation.md#36-getting-wallet-token) to LimePay's API.
+Where `walletToken` is the token returned after performing [Get Wallet Token](https://github.com/LimePay/docs/blob/latest/NodeSDK/SDK-documentation.md#26-getting-wallet-token-for-shopper) request through the SDK or a [direct call](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#36-getting-wallet-token) to LimePay's API.
 
 Returns JSON Encrypted wallet.
 
@@ -60,7 +60,7 @@ LimePay.Wallet.create(walletToken, password) // return Promise<>
 	.then(mnemonic => {})
 	.catch(error => {});
 ```
-Where `walletToken` is the token returned after performing [Get Wallet Token](https://github.com/LimePay/docs/blob/add-library-documentation/3.%20JS-SDK-documentation.md#26-getting-wallet-token-for-shopper) request through the SDK or a [direct call](https://github.com/LimePay/docs/blob/add-library-documentation/5.%20API-Documentation.md#36-getting-wallet-token) to LimePay's API and `password` is the passphrase that is going to be used for the encryption of the JSON keystore..
+Where `walletToken` is the token returned after performing [Get Wallet Token](https://github.com/LimePay/docs/blob/latest/NodeSDK/SDK-documentation.md#26-getting-wallet-token-for-shopper) request through the SDK or a [direct call](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#36-getting-wallet-token) to LimePay's API and `password` is the passphrase that is going to be used for the encryption of the JSON keystore..
 
 Returns the mnemonic of the wallet, which MUST be stored by the end-user and later can be used for providing a `forgotten password` feature.
 
@@ -70,7 +70,7 @@ Returns the mnemonic of the wallet, which MUST be stored by the end-user and lat
 LimePay.Wallet.changePassword(walletToken, mnemonic, newPassword) // returns Promise<>
 	.catch(error => {});
 ```
-Where `walletToken` is the token returned after performing [Get Wallet Token](https://github.com/LimePay/docs/blob/add-library-documentation/3.%20JS-SDK-documentation.md#26-getting-wallet-token-for-shopper) request through the SDK or a [direct call](https://github.com/LimePay/docs/blob/add-library-documentation/5.%20API-Documentation.md#36-getting-wallet-token) to LimePay's API.
+Where `walletToken` is the token returned after performing [Get Wallet Token](https://github.com/LimePay/docs/blob/latest/NodeSDK/SDK-documentation.md#26-getting-wallet-token-for-shopper) request through the SDK or a [direct call](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#36-getting-wallet-token) to LimePay's API.
 `mnemonic` is the mnemonic that was returned after creating the original wallet and `newPassword` is the new passphrase that will be used for encryption of the wallet.
 
 ## 3. Fiat Payments
