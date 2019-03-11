@@ -217,7 +217,7 @@ LimePay.relayedPayment.create(relayedPaymentData, signerWalletConfig) // returns
 	.catch(error => {});
 ```
 
-Once executed successfully returns object of type [Payment](https://github.com/LimePay/docs/blob/latest/4.%20API-Documentation.md#payment).
+Once executed successfully returns object of type [Payment](https://github.com/LimePay/docs/blob/latest/API/API-Documentation.md#payment).
 
 ---
 `signerWalletConfig` is the wallet configuration of a wallet that is marked as `signer` in the Escrow contract.
