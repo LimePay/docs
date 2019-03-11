@@ -262,7 +262,7 @@ In order to send Invoice one should execute the following request:
     GET /v1/payments/:id/invoice
 
 Returns HTTP status code 200 every time.  
-**Notice!** One can preview the invoice design which will be send by making API call to [`/v1/payments/:id/invoice/preview`](#preview-invoice)
+**Notice!** One can preview the invoice design which will be send by making API call to [`/v1/payments/:id/invoice/preview`](#51-preview-invoice)
 
 
 ### 6. Receipts
